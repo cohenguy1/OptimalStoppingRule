@@ -1,75 +1,20 @@
-﻿using System;
+﻿using RestaurantCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OptimalStoppingRule
 {
     public class Program
     {
-        public const int TotalCandidates = DecisionMaker.TotalCandidates;
+        public const int TotalCandidates = Constants.TotalCandidates;
 
-        private static List<Candidate> GenerateCandidatesForPosition()
-        {
-            var positionCandidates = new List<Candidate>();
+        public static DecisionMaker dm = new DecisionMaker();
 
-            for (var candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
-            {
-                var newCandidate = new Candidate()
-                {
-                    CandidateState = CandidateState.New,
-                    CandidateNumber = candidateIndex,
-                    CandidateAccepted = false
-                };
-
-                positionCandidates.Add(newCandidate);
-            }
-
-            var ranks = new List<int>();
-            for (var index = 1; index <= TotalCandidates; index++)
-            {
-                ranks.Add(index);
-            }
-
-            var ranksRemaining = TotalCandidates;
-            var randomGenerator = new Random();
-
-            for (var index = 0; index < TotalCandidates; index++)
-            {
-                var position = randomGenerator.Next(1, ranksRemaining + 1) - 1;
-
-                positionCandidates[index].CandidateRank = ranks[position];
-
-                ranks.RemoveAt(position);
-                ranksRemaining--;
-            }
-
-            return positionCandidates;
-        }
-
-        private static void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate)
-        {
-            int newCandidateIndex = 0;
-            foreach (var candidate in candidatesByNow)
-            {
-                if (candidate.CandidateRank > newCandidate.CandidateRank)
-                {
-                    break;
-                }
-
-                newCandidateIndex++;
-            }
-
-            candidatesByNow.Insert(newCandidateIndex, newCandidate);
-
-            var dm = new DecisionMaker();
-
-            var accepted = dm.Decide(candidatesByNow, newCandidateIndex);
-
-            newCandidate.CandidateAccepted = accepted;
-        }
-
+        
         public const long NumberOfTrials = 200000000;
 
         public static void Main(string[] args)
@@ -105,13 +50,14 @@ namespace OptimalStoppingRule
 
                 }
 
-                var positionCandidates = GenerateCandidatesForPosition();
+                Thread.Sleep(25);
+                var positionCandidates = Generation.GenerateCandidatesForPosition();
                 candidatesByNow.Clear();
 
                 for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
                 {
                     var currentCandidate = positionCandidates[candidateIndex];
-                    DetermineCandidateRank(candidatesByNow, currentCandidate);
+                    DecisionMaker.DetermineCandidateRank(candidatesByNow, currentCandidate);
 
                     if (currentCandidate.CandidateAccepted)
                     {

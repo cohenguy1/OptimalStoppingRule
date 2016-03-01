@@ -1,13 +1,14 @@
-﻿using System;
+﻿using RestaurantCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace OptimalStoppingRule
+namespace RestaurantCommon
 {
     public class DecisionMaker
     {
-        public const int TotalCandidates = 20;
+        public const int TotalCandidates = Constants.TotalCandidates;
 
         private static double[] c = new double[TotalCandidates + 1];
 
@@ -29,12 +30,39 @@ namespace OptimalStoppingRule
             }
         }
 
-        public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex)
+        public static void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate)
+        {
+            int newCandidateIndex = InsertNewCandidate(candidatesByNow, newCandidate);
+
+            var accepted = Decide(candidatesByNow, newCandidateIndex);
+
+            newCandidate.CandidateAccepted = accepted;
+        }
+
+        private static int InsertNewCandidate(List<Candidate> candidatesByNow, Candidate newCandidate)
+        {
+            int newCandidateIndex = 0;
+            foreach (var candidate in candidatesByNow)
+            {
+                if (candidate.CandidateRank > newCandidate.CandidateRank)
+                {
+                    break;
+                }
+
+                newCandidateIndex++;
+            }
+
+            candidatesByNow.Insert(newCandidateIndex, newCandidate);
+            return newCandidateIndex;
+        }
+
+
+        public static bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex)
         {
             return (newCandidateIndex + 1 <= StoppingRule[candidatesByNow.Count]);
         }
 
-        public bool Decide2(List<Candidate> candidatesByNow, Candidate newCandidate)
+        private bool Decide2(List<Candidate> candidatesByNow, Candidate newCandidate)
         {
             if (candidatesByNow.Count <= (int)Math.Sqrt(TotalCandidates))
             {
