@@ -7,11 +7,7 @@ namespace RestaurantCommon
 {
     public class Candidate
     {
-        public CandidateState CandidateState;
-
         public int CandidateRank;
-
-        public int CandidateNumber;
 
         public bool CandidateAccepted;
     }

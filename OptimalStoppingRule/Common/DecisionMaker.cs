@@ -28,6 +28,14 @@ namespace RestaurantCommon
                 c[i - 1] = 1 / (double)(i) * (((n + 1) / (double)(i + 1)) * (StoppingRule[i] * (StoppingRule[i] + 1)) / 2.0 + (i - StoppingRule[i]) * c[i]);
                 StoppingRule[i - 1] = (int)Math.Floor((i) / ((double)n + 1) * c[i - 1]);
             }
+
+            for (var i = 2; i <= TotalCandidates; i++)
+            {
+                if (StoppingRule[i] == 0)
+                {
+                    StoppingRule[i] = 1;
+                }
+            }
         }
 
         public static void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate)
@@ -59,26 +67,12 @@ namespace RestaurantCommon
 
         public static bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex)
         {
-            return (newCandidateIndex + 1 <= StoppingRule[candidatesByNow.Count]);
-        }
-
-        private bool Decide2(List<Candidate> candidatesByNow, Candidate newCandidate)
-        {
-            if (candidatesByNow.Count <= (int)Math.Sqrt(TotalCandidates))
-            {
-                return false;
-            }
-
-            if (candidatesByNow.Count == TotalCandidates - 1)
+            if (candidatesByNow.Count == Constants.TotalCandidates)
             {
                 return true;
             }
 
-            var firstSqrtCandidates = candidatesByNow.Where(candidate => candidate.CandidateNumber < Math.Sqrt(TotalCandidates));
-
-            var minRank = firstSqrtCandidates.Min(candidate => candidate.CandidateRank);
-
-            return (newCandidate.CandidateRank < minRank);
+            return (newCandidateIndex + 1 <= StoppingRule[candidatesByNow.Count]);
         }
     }
 }

@@ -25,13 +25,15 @@ namespace RandomVectors
             FileStream output = new FileStream(VectorsFile, FileMode.CreateNew);
             StreamWriter sw = new StreamWriter(output);
 
+            var positionCandidates = Generation.GenerateCandidatesForPosition();
+
             for (var i = 0; i < NumOfVectors; i++)
             {
                 sw.WriteLine("-- Vector " + (i + 1));
                 for (var positionIndex = 0; positionIndex < 10; positionIndex++)
                 {
                     Thread.Sleep(25);
-                    var positionCandidates = Generation.GenerateCandidatesForPosition();
+                    Generation.InitCandidatesForPosition(positionCandidates);
                     WriteVector(positionCandidates, sw);
                     sw.WriteLine();
                 }

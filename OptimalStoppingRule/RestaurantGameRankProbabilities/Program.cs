@@ -15,66 +15,66 @@ namespace OptimalStoppingRule
         public static DecisionMaker dm = new DecisionMaker();
 
         
-        public const long NumberOfTrials = 200000000;
+        public const long NumberOfTrials = 2000000;
 
         public static void Main(string[] args)
         {
-            var acceptedCount = new long[TotalCandidates];
-            var decisionMaker = new DecisionMaker();
+//            var acceptedCount = new long[TotalCandidates];
+//            var decisionMaker = new DecisionMaker();
 
-            var candidatesByNow = new List<Candidate>();
+//            var candidatesByNow = new List<Candidate>();
 
-            var startTimer = DateTime.Now;
-            var timeIterationCount = 1000000;
+//            var startTimer = DateTime.Now;
+//            var timeIterationCount = 10000;
 
-            for (long index = 0; index < NumberOfTrials; index++)
-            {
-                if (index == timeIterationCount)
-                {
-                    Console.WriteLine("Time: " + DateTime.Now + " precent: " + index / (double)NumberOfTrials);
+//            for (long index = 0; index < NumberOfTrials; index++)
+//            {
+//                if (index == timeIterationCount)
+//                {
+//                    Console.WriteLine("Time: " + DateTime.Now + " precent: " + index / (double)NumberOfTrials);
 
-                    var loopsCount = NumberOfTrials / (double)timeIterationCount;
-                    var timeForLoop = DateTime.Now - startTimer;
+//                    var loopsCount = NumberOfTrials / (double)timeIterationCount;
+//                    var timeForLoop = DateTime.Now - startTimer;
 
-                    TimeSpan timeRemiaiming = new TimeSpan();
+//                    TimeSpan timeRemiaiming = new TimeSpan();
 
-                    for (int i = 0; i < loopsCount; i++)
-                    {
-                        timeRemiaiming += timeForLoop;
+//                    for (int i = 0; i < loopsCount; i++)
+//                    {
+//                        timeRemiaiming += timeForLoop;
 
-                    }
+//                    }
 
-                    DateTime eta = startTimer + timeRemiaiming;
+//                    DateTime eta = startTimer + timeRemiaiming;
 
-                    Console.WriteLine("ETA for completion: " + eta);
+//                    Console.WriteLine("ETA for completion: " + eta);
 
-                }
+//                }
 
-                Thread.Sleep(25);
-                var positionCandidates = Generation.GenerateCandidatesForPosition();
-                candidatesByNow.Clear();
+//                Thread.Sleep(25);
+//                var positionCandidates = Generation.GenerateCandidatesForPosition();
+//                candidatesByNow.Clear();
 
-                for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
-                {
-                    var currentCandidate = positionCandidates[candidateIndex];
-                    DecisionMaker.DetermineCandidateRank(candidatesByNow, currentCandidate);
+//                for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
+//                {
+//                    var currentCandidate = positionCandidates[candidateIndex];
+//                    DecisionMaker.DetermineCandidateRank(candidatesByNow, currentCandidate);
 
-                    if (currentCandidate.CandidateAccepted)
-                    {
-                        acceptedCount[currentCandidate.CandidateRank - 1]++;
-                        break;
-                    }
-                }
-            }
+//                    if (currentCandidate.CandidateAccepted)
+//                    {
+//                        acceptedCount[currentCandidate.CandidateRank - 1]++;
+//                        break;
+//                    }
+//                }
+//            }
 
-            var acceptedRankProbability = new double[TotalCandidates];
+//            var acceptedRankProbability = new double[TotalCandidates];
 
-            for (int i = 0; i < TotalCandidates; i++)
-            {
-                acceptedRankProbability[i] = acceptedCount[i] / (double)NumberOfTrials;
+//            for (int i = 0; i < TotalCandidates; i++)
+//            {
+//                acceptedRankProbability[i] = acceptedCount[i] / (double)NumberOfTrials;
 
-                Console.WriteLine("Accepted Rank " + (i + 1) + ": " + acceptedRankProbability[i]);
-            }
+//                Console.WriteLine("Accepted Rank " + (i + 1) + ": " + acceptedRankProbability[i]);
+//            }
 
             Console.ReadLine();
         }

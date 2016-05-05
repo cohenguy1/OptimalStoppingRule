@@ -17,14 +17,17 @@ namespace RestaurantCommon
             {
                 var newCandidate = new Candidate()
                 {
-                    CandidateState = CandidateState.New,
-                    CandidateNumber = candidateIndex,
                     CandidateAccepted = false
                 };
 
                 positionCandidates.Add(newCandidate);
             }
 
+            return positionCandidates;
+        }
+
+        public static void InitCandidatesForPosition(List<Candidate> positionCandidates)
+        {
             var ranks = new List<int>();
             for (var index = 1; index <= Constants.TotalCandidates; index++)
             {
@@ -39,12 +42,11 @@ namespace RestaurantCommon
                 var position = randomGenerator.Next(1, ranksRemaining + 1) - 1;
 
                 positionCandidates[index].CandidateRank = ranks[position];
+                positionCandidates[index].CandidateAccepted = false;
 
                 ranks.RemoveAt(position);
                 ranksRemaining--;
             }
-
-            return positionCandidates;
         }
 
     }

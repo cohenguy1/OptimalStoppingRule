@@ -8,6 +8,6 @@ namespace RestaurantCommon
 {
     public class Constants
     {
-        public const int TotalCandidates = 20;
+        public const int TotalCandidates = 15;
     }
 }
