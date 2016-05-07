@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestaurantCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace RestaurantGameOptimalStopping
     {
         public const int Samples = 10;
 
-        public const int NumOfRanks = 20;
+        public const int NumOfRanks = Constants.TotalCandidates;
 
         public static Dictionary<int, double> ChosenRankProbabilities = new Dictionary<int, double>()
         {

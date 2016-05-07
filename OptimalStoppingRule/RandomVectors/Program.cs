@@ -13,7 +13,7 @@ namespace RandomVectors
     {
         public const int NumOfVectors = 50;
 
-        public const string VectorsFile = "Vectors2.txt";
+        public const string VectorsFile = "Vectors.txt";
 
         public static void Main(string[] args)
         {

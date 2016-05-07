@@ -18,7 +18,7 @@ namespace BuildSql
             FileStream fs2 = new FileStream("SqlCommands.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            int[] intRanks = new int[20];
+            int[] intRanks = new int[Constants.TotalCandidates];
 
             int vectorNumber = 0;
             int positionNumber = 0;
@@ -56,8 +56,7 @@ namespace BuildSql
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append("Insert Into Vectors(VectorNum, PositionNum, Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, " +
-                    "Rank7, Rank8, Rank9, Rank10, Rank11, Rank12, Rank13, Rank14, Rank15, Rank16, Rank17, Rank18, Rank19," +
-                    "Rank20) Values (");
+                    "Rank7, Rank8, Rank9, Rank10, Rank11, Rank12, Rank13, Rank14, Rank15) Values (");
                 sb.Append(vectorNumber + ", ");
                 sb.Append(positionNumber + ", ");
 
@@ -65,7 +64,7 @@ namespace BuildSql
                 {
                     sb.Append(intRanks[j] + ", ");
                 }
-                sb.Append(intRanks[19] + ");");
+                sb.Append(intRanks[intRanks.Length - 1] + ");");
 
                 sw.WriteLine(sb.ToString());
 

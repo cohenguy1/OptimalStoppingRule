@@ -20,12 +20,12 @@ namespace RestaurantSingleRun
             StreamWriter sw = new StreamWriter(fs2);
 
             DecisionMaker dm = new DecisionMaker();
-            int[] intRanks = new int[20];
+            int[] intRanks = new int[Constants.TotalCandidates];
 
-            double[] probs = new double[21];
+            double[] probs = new double[Constants.TotalCandidates + 1];
 
-            double[] freqsFirst = new double[21];
-            double[] freqsLast = new double[21];
+            double[] freqsFirst = new double[Constants.TotalCandidates + 1];
+            double[] freqsLast = new double[Constants.TotalCandidates + 1];
 
             int positionNumber = 0;
 
@@ -103,7 +103,7 @@ namespace RestaurantSingleRun
                 line = sr.ReadLine();
             }
 
-            for (int j = 0; j < 21; j++)
+            for (int j = 0; j < Constants.TotalCandidates + 1; j++)
             {
                 probs[j] = probs[j] / (50.0 * 10);
                 freqsFirst[j] = freqsFirst[j] / 50.0;
