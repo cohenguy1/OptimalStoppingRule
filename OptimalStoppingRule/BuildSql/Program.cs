@@ -23,6 +23,9 @@ namespace BuildSql
             int vectorNumber = 0;
             int positionNumber = 0;
 
+            sw.WriteLine("delete from Vectors;");
+            sw.WriteLine();
+
             string line = sr.ReadLine();
             while (line != null)
             {
@@ -56,7 +59,7 @@ namespace BuildSql
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append("Insert Into Vectors(VectorNum, PositionNum, Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, " +
-                    "Rank7, Rank8, Rank9, Rank10, Rank11, Rank12, Rank13, Rank14, Rank15) Values (");
+                    "Rank7, Rank8, Rank9, Rank10) Values (");
                 sb.Append(vectorNumber + ", ");
                 sb.Append(positionNumber + ", ");
 

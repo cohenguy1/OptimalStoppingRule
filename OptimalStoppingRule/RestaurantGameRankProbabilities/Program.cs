@@ -1,6 +1,7 @@
 ﻿using RestaurantCommon;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,20 +15,33 @@ namespace OptimalStoppingRule
 
         public static DecisionMaker dm = new DecisionMaker();
 
-        
-        public const long NumberOfTrials = 36000;
+        public const string ProbabilitiesFile = "Probabilities.txt";
+
+        public const long NumberOfTrials = 10000000;
 
         public static void Main(string[] args)
         {
+            if (File.Exists(ProbabilitiesFile))
+            {
+                File.Delete(ProbabilitiesFile);
+            }
+
+            FileStream output = new FileStream(ProbabilitiesFile, FileMode.CreateNew);
+            StreamWriter sw = new StreamWriter(output);
+
             var acceptedCount = new long[TotalCandidates];
             var decisionMaker = new DecisionMaker();
 
             var candidatesByNow = new List<Candidate>();
 
             var startTimer = DateTime.Now;
-            var timeIterationCount = 1500;
+            var timeIterationCount = NumberOfTrials / 1000;
 
             var positionCandidates = Generation.GenerateCandidatesForPosition();
+
+            double[] validation = new double[10];
+
+            Random random = new Random();
 
             for (long index = 0; index < NumberOfTrials; index++)
             {
@@ -50,11 +64,16 @@ namespace OptimalStoppingRule
 
                     Console.WriteLine("ETA for completion: " + eta);
 
+                    Thread.Sleep(25);
                 }
-
-                Thread.Sleep(25);
-                Generation.InitCandidatesForPosition(positionCandidates);
+                
+                Generation.InitCandidatesForPosition(positionCandidates, random);
                 candidatesByNow.Clear();
+
+                for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
+                {
+                    validation[positionCandidates[candidateIndex].CandidateRank - 1] += candidateIndex + 1;
+                }
 
                 for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
                 {
@@ -75,9 +94,20 @@ namespace OptimalStoppingRule
             {
                 acceptedRankProbability[i] = acceptedCount[i] / (double)NumberOfTrials;
 
-                Console.WriteLine("Accepted Rank " + (i + 1) + ": " + acceptedRankProbability[i]);
+                sw.WriteLine("Accepted Rank " + (i + 1) + ": " + acceptedRankProbability[i]);
             }
 
+            for (int i = 0; i < TotalCandidates; i++)
+            {
+                validation[i] /= NumberOfTrials;
+
+                sw.WriteLine("Validation " + (i + 1) + ": " + validation[i]);
+            }
+
+            sw.Close();
+            output.Close();
+
+            Console.WriteLine("Completed! Press any key to exit...");
             Console.ReadLine();
         }
     }

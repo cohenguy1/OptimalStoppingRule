@@ -26,7 +26,7 @@ namespace RestaurantCommon
             return positionCandidates;
         }
 
-        public static void InitCandidatesForPosition(List<Candidate> positionCandidates)
+        public static void InitCandidatesForPosition(List<Candidate> positionCandidates, Random randomGenerator)
         {
             var ranks = new List<int>();
             for (var index = 1; index <= Constants.TotalCandidates; index++)
@@ -35,18 +35,26 @@ namespace RestaurantCommon
             }
 
             var ranksRemaining = Constants.TotalCandidates;
-            var randomGenerator = new Random();
+            int position;
 
             for (var index = 0; index < Constants.TotalCandidates; index++)
             {
-                var position = randomGenerator.Next(1, ranksRemaining + 1) - 1;
-
+                if (ranksRemaining > 1)
+                {
+                    position = randomGenerator.Next(1, ranksRemaining + 1) - 1;
+                    //Console.Write(position + " ");
+                }
+                else
+                {
+                    position = 0;
+                }
                 positionCandidates[index].CandidateRank = ranks[position];
                 positionCandidates[index].CandidateAccepted = false;
 
                 ranks.RemoveAt(position);
                 ranksRemaining--;
             }
+            //Console.WriteLine();
         }
 
     }
