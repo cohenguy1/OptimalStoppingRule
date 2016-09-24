@@ -13,8 +13,6 @@ namespace OptimalStoppingRule
     {
         public const int TotalCandidates = Constants.TotalCandidates;
 
-        public static DecisionMaker dm = new DecisionMaker();
-
         public const string ProbabilitiesFile = "Probabilities.txt";
 
         public const long NumberOfTrials = 10000000;
@@ -30,7 +28,6 @@ namespace OptimalStoppingRule
             StreamWriter sw = new StreamWriter(output);
 
             var acceptedCount = new long[TotalCandidates];
-            var decisionMaker = new DecisionMaker();
 
             var candidatesByNow = new List<Candidate>();
 
@@ -78,7 +75,7 @@ namespace OptimalStoppingRule
                 for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
                 {
                     var currentCandidate = positionCandidates[candidateIndex];
-                    DecisionMaker.DetermineCandidateRank(candidatesByNow, currentCandidate);
+                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate);
 
                     if (currentCandidate.CandidateAccepted)
                     {

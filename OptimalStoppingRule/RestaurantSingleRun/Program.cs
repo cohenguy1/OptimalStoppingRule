@@ -19,7 +19,6 @@ namespace RestaurantSingleRun
             FileStream fs2 = new FileStream("VectorsDecisions.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            DecisionMaker dm = new DecisionMaker();
             int[] intRanks = new int[Constants.TotalCandidates];
 
             double[] probs = new double[Constants.TotalCandidates + 1];
@@ -76,7 +75,7 @@ namespace RestaurantSingleRun
                 for (i = 0; i < intRanks.Length; i++)
                 {
                     var newCandidate = new Candidate() { CandidateRank = intRanks[i] };
-                    DecisionMaker.DetermineCandidateRank(candidatesByNow, newCandidate);
+                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, newCandidate);
 
                     if (newCandidate.CandidateAccepted)
                     {

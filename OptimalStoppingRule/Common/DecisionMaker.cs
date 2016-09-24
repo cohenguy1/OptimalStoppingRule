@@ -14,7 +14,19 @@ namespace RestaurantCommon
 
         public static int[] StoppingRule = new int[TotalCandidates + 1];
 
-        public DecisionMaker()
+        private static DecisionMaker _instance;
+
+        public static DecisionMaker GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new DecisionMaker();
+            }
+
+            return _instance;
+        }
+
+        private DecisionMaker()
         {
             int n = TotalCandidates;
 
@@ -38,7 +50,7 @@ namespace RestaurantCommon
             }
         }
 
-        public static void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate)
+        public void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate)
         {
             int newCandidateIndex = InsertNewCandidate(candidatesByNow, newCandidate);
 
@@ -47,7 +59,7 @@ namespace RestaurantCommon
             newCandidate.CandidateAccepted = accepted;
         }
 
-        private static int InsertNewCandidate(List<Candidate> candidatesByNow, Candidate newCandidate)
+        private int InsertNewCandidate(List<Candidate> candidatesByNow, Candidate newCandidate)
         {
             int newCandidateIndex = 0;
             foreach (var candidate in candidatesByNow)
@@ -65,7 +77,7 @@ namespace RestaurantCommon
         }
 
 
-        public static bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex)
+        public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex)
         {
             if (candidatesByNow.Count == Constants.TotalCandidates)
             {

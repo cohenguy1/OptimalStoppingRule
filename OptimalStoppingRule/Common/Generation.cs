@@ -8,6 +8,8 @@ namespace RestaurantCommon
 {
     public class Generation
     {
+        public static List<int> ranks = new List<int>();
+
 
         public static List<Candidate> GenerateCandidatesForPosition()
         {
@@ -28,7 +30,7 @@ namespace RestaurantCommon
 
         public static void InitCandidatesForPosition(List<Candidate> positionCandidates, Random randomGenerator)
         {
-            var ranks = new List<int>();
+            ranks.Clear();
             for (var index = 1; index <= Constants.TotalCandidates; index++)
             {
                 ranks.Add(index);
