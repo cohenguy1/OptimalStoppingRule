@@ -12,8 +12,6 @@ namespace MonteCarloDecider
         {
             int[] accepted = new int[10];
 
-            MonteCarlo mc = new MonteCarlo();
-
             var stoppingDecision = 2;
             Random random = new Random();
 
@@ -25,7 +23,7 @@ namespace MonteCarloDecider
                     accepted[1] = j;
 
                     DateTime now = DateTime.Now;
-                    bool shouldAsk = mc.ShouldAsk(accepted, stoppingDecision, random);
+                    bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision, random);
                     var dt = DateTime.Now - now;
 
                     Console.WriteLine(i + "," + j + " - ask: " + shouldAsk + " Time for calculation: " + dt.TotalSeconds);

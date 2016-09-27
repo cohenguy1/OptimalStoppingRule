@@ -26,6 +26,8 @@ namespace RestaurantSingleRun
             double[] freqsFirst = new double[Constants.TotalCandidates + 1];
             double[] freqsLast = new double[Constants.TotalCandidates + 1];
 
+            int vectorNum = 0;
+
             int positionNumber = 0;
 
             string line = sr.ReadLine() ;
@@ -33,6 +35,11 @@ namespace RestaurantSingleRun
             {
                 if (line.StartsWith("--") || line == string.Empty)
                 {
+                    if (line.StartsWith("--"))
+                    {
+                        vectorNum++;
+                    }
+
                     sw.WriteLine(line);
                     line = sr.ReadLine();
                     positionNumber = 0;

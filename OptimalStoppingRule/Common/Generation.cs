@@ -10,7 +10,6 @@ namespace RestaurantCommon
     {
         public static List<int> ranks = new List<int>();
 
-
         public static List<Candidate> GenerateCandidatesForPosition()
         {
             var positionCandidates = new List<Candidate>();

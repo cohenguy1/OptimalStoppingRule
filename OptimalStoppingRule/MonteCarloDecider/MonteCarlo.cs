@@ -11,7 +11,7 @@ namespace MonteCarloDecider
     {
         public const int NumOfVectors = 1000000;
 
-        public bool ShouldAsk(int[] accepted, int stoppingDecision, Random random)
+        public static bool ShouldAsk(int[] accepted, int stoppingDecision, Random random)
         {
             var positionCandidates = Generation.GenerateCandidatesForPosition();
             var candidatesByNow = new List<Candidate>();
@@ -71,7 +71,7 @@ namespace MonteCarloDecider
             return !foundBetter;
         }
 
-        private int SelectCandidate(List<Candidate> positionCandidates, List<Candidate> candidatesByNow, int positionIndex)
+        private static int SelectCandidate(List<Candidate> positionCandidates, List<Candidate> candidatesByNow, int positionIndex)
         {
             candidatesByNow.Clear();
             for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
