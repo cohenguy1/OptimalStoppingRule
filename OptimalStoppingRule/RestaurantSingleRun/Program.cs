@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantSingleRun
+namespace RestaurantVectorFileReader
 {
     class Program
     {

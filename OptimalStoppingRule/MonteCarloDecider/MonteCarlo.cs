@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MonteCarloDecider
 {
-    class MonteCarlo
+    public class MonteCarlo
     {
         public const int NumOfVectors = 1000000;
 

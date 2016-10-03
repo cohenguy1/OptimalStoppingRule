@@ -13,11 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomVectors", "RandomVect
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantCommon", "Common\RestaurantCommon.csproj", "{C2C8F49C-3355-4D49-92A7-331578D43B8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantRead", "RestaurantSingleRun\RestaurantRead.csproj", "{062FBE47-1AC2-4076-BFC4-7B621D04FFAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantVectorFileReader", "RestaurantSingleRun\RestaurantVectorFileReader.csproj", "{062FBE47-1AC2-4076-BFC4-7B621D04FFAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildSql", "BuildSql\BuildSql.csproj", "{9C865637-3F92-4F0D-B129-EA8BF5B7A342}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonteCarloDecider", "MonteCarloDecider\MonteCarloDecider.csproj", "{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonteCarloReader", "MonteCarloReader\MonteCarloReader.csproj", "{2A1343C1-20BF-4269-ADCC-26EA7C8AAD0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A1343C1-20BF-4269-ADCC-26EA7C8AAD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A1343C1-20BF-4269-ADCC-26EA7C8AAD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A1343C1-20BF-4269-ADCC-26EA7C8AAD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A1343C1-20BF-4269-ADCC-26EA7C8AAD0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
