@@ -19,6 +19,8 @@ namespace MonteCarloDecider
             double[] exponentialSmoothing = new double[10];
             double[] exponentialSmoothingAccumulated = new double[10];
 
+            int[] acceptedClone = cloneArray(accepted);
+
             var alpha = 0.45;
             for (var positionIndex = 0; positionIndex <= stoppingDecision; positionIndex++)
             {
@@ -34,20 +36,23 @@ namespace MonteCarloDecider
 
             for (var i = 0; i < NumOfVectors; i++)
             {
+                // generate random candidates for each of the remaining positions and update the selected candidates
                 for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
                 {
                     Generation.InitCandidatesForPosition(positionCandidates, random);
 
-                    accepted[positionIndex] = SelectCandidate(positionCandidates, candidatesByNow, positionIndex);
+                    acceptedClone[positionIndex] = SelectCandidate(positionCandidates, candidatesByNow, positionIndex);
                 }
 
+                // determine the exponential smoothing according to the new randomized candidates, for each position
                 for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
                 {
-                    exponentialSmoothing[positionIndex] = alpha * accepted[positionIndex] + (1 - alpha) * exponentialSmoothing[positionIndex - 1];
+                    exponentialSmoothing[positionIndex] = alpha * acceptedClone[positionIndex] + (1 - alpha) * exponentialSmoothing[positionIndex - 1];
                     exponentialSmoothingAccumulated[positionIndex] += exponentialSmoothing[positionIndex];
                 }
             }
 
+            // precalculated smooting (monte carlo doesn't affect this smoothing)
             for (var positionIndex = 0; positionIndex <= stoppingDecision; positionIndex++)
             {
                 exponentialSmoothingAccumulated[positionIndex] = exponentialSmoothing[positionIndex];
@@ -86,6 +91,18 @@ namespace MonteCarloDecider
             }
 
             return 0;
+        }
+
+        private static int[] cloneArray(int[] accepted)
+        {
+            int[] newArray = new int[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                newArray[i] = accepted[i];
+            }
+
+            return newArray;
         }
     }
 }

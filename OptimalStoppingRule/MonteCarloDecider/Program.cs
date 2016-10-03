@@ -12,7 +12,7 @@ namespace MonteCarloDecider
         {
             int[] accepted = new int[10];
 
-            var stoppingDecision = 2;
+            var stoppingDecision = 1;
             Random random = new Random();
 
             for (int i = 4; i <= 10; i++)
@@ -35,6 +35,7 @@ namespace MonteCarloDecider
                 }
             }
 
+            Console.ReadLine();
         }
     }
 }
