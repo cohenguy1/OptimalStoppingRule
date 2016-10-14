@@ -19,9 +19,7 @@ namespace RandomVectors
 
             int[] acceptedCount = new int[10];
 
-            while (acceptedCount[0] < 5 || acceptedCount[1] < 5 || 
-                acceptedCount[2] < 5 || acceptedCount[3] < 5 || acceptedCount[9] < 1 || acceptedCount[8] < 1 ||
-                acceptedCount[7] < 1 || acceptedCount[6] < 1 || acceptedCount[5] < 1)
+            while (acceptedCount[0] > 8 || acceptedCount[0] == 0)
             {
                 for (int i = 0; i < acceptedCount.Length; i++)
                 {

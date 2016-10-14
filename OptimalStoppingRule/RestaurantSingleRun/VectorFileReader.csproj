@@ -54,6 +54,10 @@
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>RestaurantCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonteCarloDecider\MonteCarloDecider.csproj">
+      <Project>{6419f5be-12a3-4a0a-8767-ac42ef8e4e05}</Project>
+      <Name>MonteCarloDecider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

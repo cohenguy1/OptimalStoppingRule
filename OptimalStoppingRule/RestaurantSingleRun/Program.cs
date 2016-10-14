@@ -1,36 +1,217 @@
-﻿using OptimalStoppingRule;
+﻿using MonteCarloDecider;
+using OptimalStoppingRule;
 using RestaurantCommon;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RestaurantVectorFileReader
+namespace VectorFileReader
 {
-    class Program
+    public class RestaurantVectorFileReader
     {
+        private static int vectorNum = 0;
+
         public static void Main(string[] args)
         {
             FileStream fs = new FileStream("Vectors.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
+            Random random = new Random();
+            bool terminate;
 
-            FileStream fs2 = new FileStream("VectorsDecisions.txt", FileMode.Create);
+            double[] acceptedCandidatesDistribution = new double[11];
+
+            int[] optimalStopRankingAcc = new int[11];
+            int[] mcStopRankingAcc = new int[11];
+
+            int[] optimalStopPositionAcc = new int[11];
+            int[] mcStopPositionAcc = new int[11];
+
+            FileStream fs2 = new FileStream("VectorsOutput.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
+            sw.WriteLine("Vector\tOptimal\tMC\t\tAccepted");
+
+            var startTime = DateTime.Now;
+            Console.WriteLine("Started at: " + startTime);
+
+            while (vectorNum <= 50)
+            {
+                int[] accepted = ReadNextVector(sr, out terminate, ref vectorNum);
+
+                if (terminate)
+                {
+                    break;
+                }
+
+                if (accepted[0] == 0)
+                {
+                    continue;
+                }
+
+                int optimalStoppingPosition = GetOptimalStopping(accepted) + 1;
+                optimalStopPositionAcc[optimalStoppingPosition]++;
+                optimalStopRankingAcc[accepted[optimalStoppingPosition - 1]]++;
+
+                int mcStoppingPosition = GetMonteCarloStopping(accepted, random) + 1;
+                mcStopPositionAcc[mcStoppingPosition]++;
+                mcStopRankingAcc[accepted[mcStoppingPosition - 1]]++;
+
+                sw.Write(vectorNum + "\t" + optimalStoppingPosition + "\t" + mcStoppingPosition + "\t\t");
+
+                for (int index = 0; index < Constants.TotalCandidates; index++)
+                {
+                    acceptedCandidatesDistribution[accepted[index]]++;
+                    sw.Write(accepted[index] + "\t");
+                }
+
+                sw.WriteLine();
+            }
+
+            sw.WriteLine();
+            sw.WriteLine();
+
+            PrintSummary(sw, acceptedCandidatesDistribution, vectorNum);
+
+            sw.WriteLine();
+            sw.WriteLine();
+
+            PrintSummary(sw, optimalStopPositionAcc, mcStopPositionAcc, "Position");
+
+            sw.WriteLine();
+            sw.WriteLine();
+            PrintSummary(sw, optimalStopRankingAcc, mcStopRankingAcc, "Ranking");
+
+            Console.WriteLine("Finished at: " + DateTime.Now);
+            Console.WriteLine("Total Time: " + (DateTime.Now - startTime).TotalMinutes + " minutes");
+
+            sw.Close();
+            sr.Close();
+
+            fs.Close();
+            fs2.Close();
+
+            Console.ReadLine();
+        }
+
+        private static void PrintSummary(StreamWriter sw, double[] acceptedCandidatesDistribution, int numOfVectors)
+        {
+            for (int i = 0; i < acceptedCandidatesDistribution.Length; i++)
+            {
+                acceptedCandidatesDistribution[i] /= ((double)Constants.TotalCandidates * numOfVectors / 100);
+            }
+
+            sw.WriteLine("Summary by Accepted:");
+            sw.WriteLine();
+            sw.Write("\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write(i.ToString("0.00") + "\t");
+            }
+            sw.WriteLine();
+
+            sw.Write("\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write("===\t");
+            }
+            sw.WriteLine();
+
+            sw.Write("\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write(acceptedCandidatesDistribution[i] + "\t");
+            }
+            sw.WriteLine();
+        }
+
+        private static void PrintSummary(StreamWriter sw, int[] optimalStopPositionAcc, int[] mcStopPositionAcc, string aspect)
+        {
+            sw.WriteLine("Summary by " + aspect);
+            sw.WriteLine();
+            sw.Write("\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write(i + "\t");
+            }
+            sw.WriteLine();
+
+            sw.Write("\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write("===\t");
+            }
+            sw.WriteLine();
+
+            sw.Write("Optimal\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write(optimalStopPositionAcc[i] + "\t");
+            }
+            sw.WriteLine();
+
+            sw.Write("MC\t\t");
+            for (int i = 1; i <= 10; i++)
+            {
+                sw.Write(mcStopPositionAcc[i] + "\t");
+            }
+            sw.WriteLine();
+        }
+
+        private static int GetOptimalStopping(int[] accepted)
+        {
+            int stoppingDecision = 0;
+
+            for (; stoppingDecision < 10; stoppingDecision++)
+            {
+                bool shouldAsk = Optimal.ShouldAsk(accepted, stoppingDecision);
+
+                if (shouldAsk)
+                {
+                    break;
+                }
+            }
+
+            return stoppingDecision;
+        }
+
+        private static int GetMonteCarloStopping(int[] accepted, Random random)
+        {
+            if (accepted[0] <= 2)
+            {
+                return 0;
+            }
+
+            int stoppingDecision = 1;
+            // spare the stoppingDecision = 0 since it didn't stop (accepted[0] > 3)
+            for (; stoppingDecision < 10; stoppingDecision++)
+            {
+                bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision, random);
+
+                if (shouldAsk)
+                {
+                    break;
+                }
+            }
+
+            return stoppingDecision;
+        }
+
+        public static int[] ReadNextVector(StreamReader sr, out bool terminate, ref int vectorNum)
+        {
+            terminate = false;
+
+            var positionNumber = 0;
+
+            int[] accepted = new int[10];
             int[] intRanks = new int[Constants.TotalCandidates];
+            string line = sr.ReadLine();
 
-            double[] probs = new double[Constants.TotalCandidates + 1];
+            if (line == null)
+            {
+                terminate = true;
+                return accepted;
+            }
 
-            double[] freqsFirst = new double[Constants.TotalCandidates + 1];
-            double[] freqsLast = new double[Constants.TotalCandidates + 1];
-
-            int vectorNum = 0;
-
-            int positionNumber = 0;
-
-            string line = sr.ReadLine() ;
             while (line != null)
             {
                 if (line.StartsWith("--") || line == string.Empty)
@@ -39,14 +220,15 @@ namespace RestaurantVectorFileReader
                     {
                         vectorNum++;
                     }
+                    else
+                    {
+                        break;
+                    }
 
-                    sw.WriteLine(line);
                     line = sr.ReadLine();
                     positionNumber = 0;
                     continue;
                 }
-
-                positionNumber++;
 
                 string[] ranks = line.Split(' ');
 
@@ -62,7 +244,6 @@ namespace RestaurantVectorFileReader
 
                     if (!int.TryParse(rank, out intRank))
                     {
-                        sw.WriteLine(line);
                         line = sr.ReadLine();
                         skipLine = true;
                         break;
@@ -87,42 +268,41 @@ namespace RestaurantVectorFileReader
                     if (newCandidate.CandidateAccepted)
                     {
                         chosenRank = intRanks[i];
-                        probs[chosenRank]++;
-
-                        if (positionNumber == 1)
-                        {
-                            freqsFirst[chosenRank]++;
-                        }
-                        else if (positionNumber == 10)
-                        {
-                            freqsLast[chosenRank]++;
-                        }
-
+                        accepted[positionNumber] = chosenRank;
                         break;
                     }
                 }
 
-                sw.Write(line);
-                sw.WriteLine("\t\t " + chosenRank);
+                positionNumber++;
 
-                //Console.WriteLine(chosenRank);
                 line = sr.ReadLine();
             }
 
-            for (int j = 0; j < Constants.TotalCandidates + 1; j++)
+            return accepted;
+        }
+
+    }
+
+    public class Optimal
+    {
+        public static bool ShouldAsk(int[] accepted, int stoppingDecision)
+        {
+            if (accepted[stoppingDecision] == 1)
             {
-                probs[j] = probs[j] / (50.0 * 10);
-                freqsFirst[j] = freqsFirst[j] / 50.0;
-                freqsLast[j] = freqsLast[j] / 50.0;
+                return true;
             }
 
-            sw.Close();
-            fs2.Close();
+            if (stoppingDecision + 1 == Constants.TotalCandidates)
+            {
+                return true;
+            }
 
-            sr.Close();
-            fs.Close();
+            if (stoppingDecision + 1 == Constants.TotalCandidates - 1)
+            {
+                return accepted[stoppingDecision] <= 3;
+            }
 
-           // Console.ReadLine();
+            return false;
         }
     }
 }

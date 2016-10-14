@@ -58,6 +58,10 @@
       <Project>{6419f5be-12a3-4a0a-8767-ac42ef8e4e05}</Project>
       <Name>MonteCarloDecider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RestaurantSingleRun\VectorFileReader.csproj">
+      <Project>{062fbe47-1ac2-4076-bfc4-7b621d04ffac}</Project>
+      <Name>VectorFileReader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
