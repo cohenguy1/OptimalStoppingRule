@@ -41,16 +41,17 @@ namespace RestaurantCommon
                 StoppingRule[i - 1] = (int)Math.Floor((i) / ((double)n + 1) * c[i - 1]);
             }
 
+           
             for (var i = 2; i <= TotalCandidates; i++)
             {
-                //StoppingRule[i] = Math.Min(10, StoppingRule[i] + 1);
-                if (StoppingRule[i] == 0)
+                StoppingRule[i] = Math.Min(RestaurantConstants.TotalCandidates, StoppingRule[i] + 1);
+                
+                if (i >= 4)
                 {
-                    StoppingRule[i]++;
+                    StoppingRule[i] = Math.Min(RestaurantConstants.TotalCandidates, StoppingRule[i] + 1);
                 }
-
             }
-            
+
             var x = 3;
         }
 
@@ -86,14 +87,6 @@ namespace RestaurantCommon
             if (candidatesByNow.Count == RestaurantConstants.TotalCandidates)
             {
                 return true;
-            }
-
-            if (candidatesByNow.Count == 1)
-            {
-                if (rand.NextDouble() < 0.3)
-                {
-                    return true;
-                }
             }
 
             return (newCandidateIndex + 1 <= StoppingRule[candidatesByNow.Count]);

@@ -20,7 +20,9 @@ namespace RandomVectorsGenerator
             int[] acceptedCountOnSecond = new int[RestaurantConstants.TotalCandidates];
 
             while (acceptedCountOnFirst[0] > 8 || acceptedCountOnFirst[0] == 0 ||
-                   acceptedCountOnSecond[0] > 8)
+                   acceptedCountOnFirst[1] > 8 ||
+                   acceptedCountOnSecond[0] > 7 ||
+                   (acceptedCountOnFirst[0] + acceptedCountOnFirst[1] + acceptedCountOnFirst[2] > 25))
             {
                 for (int i = 0; i < acceptedCountOnFirst.Length; i++)
                 {

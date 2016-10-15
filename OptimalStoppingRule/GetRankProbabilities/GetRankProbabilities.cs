@@ -40,6 +40,8 @@ namespace OptimalStoppingRule
 
             double[] decisionStoppingPosition = new double[11];
 
+            double expectation = 0;
+
             Random random = new Random();
             Random rand2 = new Random();
 
@@ -95,6 +97,8 @@ namespace OptimalStoppingRule
             {
                 acceptedRankProbability[i] = acceptedCount[i] / (double)NumberOfTrials;
 
+                expectation += acceptedRankProbability[i] * (i + 1);
+
                 sw.WriteLine("Accepted Rank " + (i + 1) + ": " + acceptedRankProbability[i]);
             }
 
@@ -109,6 +113,18 @@ namespace OptimalStoppingRule
             {
                 decisionStoppingPosition[i] /= NumberOfTrials;
                 sw.WriteLine("Decision Stopping Position " + (i) + ": " + decisionStoppingPosition[i]);
+            }
+
+            sw.WriteLine();
+            sw.WriteLine("Expectation: " + expectation.ToString("0.00"));
+
+            sw.WriteLine();
+            sw.WriteLine();
+
+            sw.WriteLine("Dictionary for probabilities: ");
+            for (int i = 0; i < TotalCandidates; i++)
+            {
+                sw.WriteLine("{" + (i + 1) + ", " + acceptedRankProbability[i] + " }, ");
             }
 
             sw.Close();

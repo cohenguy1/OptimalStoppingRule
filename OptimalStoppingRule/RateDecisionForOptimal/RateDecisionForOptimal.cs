@@ -14,16 +14,16 @@ namespace RestaurantGameOptimalStopping
         public static Dictionary<int, double> ChosenRankProbabilities = new Dictionary<int, double>()
         {
             /*10 modified*/
-            {1, 0.2117584 },
-            {2, 0.180757 },
-            {3, 0.1477834 },
-            {4, 0.1165765 },
-            {5, 0.092037 },
-            {6, 0.0729026 },
-            {7, 0.0584233 },
-            {8, 0.0484167 },
-            {9, 0.0396285 },
-            {10, 0.0317166 },
+            {1, 0.1968508 },
+            {2, 0.1749329 },
+            {3, 0.153611 },
+            {4, 0.1334523 },
+            {5, 0.1131547 },
+            {6, 0.0914123 },
+            {7, 0.0688202 },
+            {8, 0.0454561 },
+            {9, 0.0222743 },
+            {10, 3.54E-05 }, 
             /* 15 modified
             {1, 0.20175 },
             {2, 0.169805556 },
@@ -87,7 +87,7 @@ namespace RestaurantGameOptimalStopping
 
             Console.WriteLine("******");
 
-            
+
             Console.ReadLine();
         }
 
