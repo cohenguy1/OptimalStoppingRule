@@ -7,8 +7,6 @@ namespace RandomVectorsGenerator
 {
     public class RandomVectors
     {
-        public const int NumOfVectors = 50;
-
         public const string VectorsFile = "Vectors.txt";
 
         public static void Main(string[] args)
@@ -18,8 +16,8 @@ namespace RandomVectorsGenerator
             Random random = new Random();
             Random rand2 = new Random();
 
-            int[] acceptedCountOnFirst = new int[10];
-            int[] acceptedCountOnSecond = new int[10];
+            int[] acceptedCountOnFirst = new int[RestaurantConstants.TotalCandidates];
+            int[] acceptedCountOnSecond = new int[RestaurantConstants.TotalCandidates];
 
             while (acceptedCountOnFirst[0] > 8 || acceptedCountOnFirst[0] == 0 ||
                    acceptedCountOnSecond[0] > 8)
@@ -38,7 +36,7 @@ namespace RandomVectorsGenerator
                 FileStream output = new FileStream(VectorsFile, FileMode.CreateNew);
                 StreamWriter sw = new StreamWriter(output);
 
-                for (var i = 0; i < NumOfVectors; i++)
+                for (var i = 0; i < RestaurantConstants.NumOfVectors; i++)
                 {
                     sw.WriteLine("-- Vector " + (i + 1));
                     for (var positionIndex = 0; positionIndex < 10; positionIndex++)
@@ -72,7 +70,7 @@ namespace RandomVectorsGenerator
         private static void IncreaseAcceptedCount(int[] acceptedCount, List<Candidate> positionCandidates, Random rand)
         {
             var candidatesByNow = new List<Candidate>();
-            for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
+            for (int candidateIndex = 0; candidateIndex < RestaurantConstants.TotalCandidates; candidateIndex++)
             {
                 var currentCandidate = positionCandidates[candidateIndex];
                 DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand);

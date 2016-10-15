@@ -10,7 +10,7 @@ namespace MonteCarloDecider
     {
         public static void Main(string[] args)
         {
-            int[] accepted = new int[10];
+            int[] accepted = new int[RestaurantConstants.TotalCandidates];
 
             var stoppingDecision = 0;
             Random random = new Random();

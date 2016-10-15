@@ -8,7 +8,7 @@ namespace RestaurantCommon
 {
     public class DecisionMaker
     {
-        public const int TotalCandidates = Constants.TotalCandidates;
+        public const int TotalCandidates = RestaurantConstants.TotalCandidates;
 
         private static double[] c = new double[TotalCandidates + 1];
 
@@ -83,7 +83,7 @@ namespace RestaurantCommon
 
         public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex, Random rand)
         {
-            if (candidatesByNow.Count == Constants.TotalCandidates)
+            if (candidatesByNow.Count == RestaurantConstants.TotalCandidates)
             {
                 return true;
             }

@@ -79,7 +79,7 @@ namespace MonteCarloDecider
         private static int SelectCandidate(List<Candidate> positionCandidates, List<Candidate> candidatesByNow, int positionIndex, Random random)
         {
             candidatesByNow.Clear();
-            for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
+            for (int candidateIndex = 0; candidateIndex < RestaurantConstants.TotalCandidates; candidateIndex++)
             {
                 var currentCandidate = positionCandidates[candidateIndex];
                 DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, random);
@@ -95,7 +95,7 @@ namespace MonteCarloDecider
 
         private static int[] cloneArray(int[] accepted)
         {
-            int[] newArray = new int[10];
+            int[] newArray = new int[RestaurantConstants.TotalPositions];
 
             for (int i = 0; i < 10; i++)
             {

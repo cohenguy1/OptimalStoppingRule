@@ -9,9 +9,7 @@ namespace RestaurantGameOptimalStopping
 {
     class RateDecisionForOptimal
     {
-        public const int Samples = 10;
-
-        public const int NumOfRanks = Constants.TotalCandidates;
+        public const int NumOfRanks = RestaurantConstants.TotalCandidates;
 
         public static Dictionary<int, double> ChosenRankProbabilities = new Dictionary<int, double>()
         {
@@ -67,22 +65,22 @@ namespace RestaurantGameOptimalStopping
             {20, 0.000776805 }*/
         };
 
-        public static int[] stoppingValues = new int[Samples];
+        public static int[] stoppingValues = new int[RestaurantConstants.TotalPositions];
 
         public static void Main(string[] args)
         {
             var expectation = GetExpectation(ChosenRankProbabilities);
 
-            stoppingValues[Samples - 1] = NumOfRanks;
+            stoppingValues[RestaurantConstants.TotalPositions - 1] = NumOfRanks;
 
-            for (int i = Samples - 2; i >= 0; i--)
+            for (int i = RestaurantConstants.TotalPositions - 2; i >= 0; i--)
             {
                 var stoppingValue = GetProbabilityThatRankLowerOrEqualsThan(stoppingValues[i + 1]) * GetExpectationOrRankLowerOrEquals(stoppingValues[i + 1])
                                     + GetProbabilityThatRankGreater(stoppingValues[i + 1]) * stoppingValues[i + 1];
                 stoppingValues[i] = stoppingValue > 1 ? (int)stoppingValue : 1;
             }
 
-            for (int i = Samples - 1; i >= 0; i--)
+            for (int i = RestaurantConstants.TotalPositions - 1; i >= 0; i--)
             {
                 Console.WriteLine((i + 1) + " Stopping Value: " + stoppingValues[i]);
             }

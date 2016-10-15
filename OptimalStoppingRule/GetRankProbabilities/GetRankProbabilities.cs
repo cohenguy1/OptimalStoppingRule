@@ -11,7 +11,7 @@ namespace OptimalStoppingRule
 {
     public class GetRankProbabilities
     {
-        public const int TotalCandidates = Constants.TotalCandidates;
+        public const int TotalCandidates = RestaurantConstants.TotalCandidates;
 
         public const string ProbabilitiesFile = "Probabilities.txt";
 
