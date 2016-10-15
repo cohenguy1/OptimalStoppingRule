@@ -39,7 +39,7 @@ namespace RandomVectorsGenerator
                 for (var i = 0; i < RestaurantConstants.NumOfVectors; i++)
                 {
                     sw.WriteLine("-- Vector " + (i + 1));
-                    for (var positionIndex = 0; positionIndex < 10; positionIndex++)
+                    for (var positionIndex = 0; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
                     {
                         Generation.InitCandidatesForPosition(positionCandidates, random);
                         if (positionIndex == 0)

@@ -45,7 +45,7 @@ namespace MonteCarloDecider
                 }
 
                 // determine the exponential smoothing according to the new randomized candidates, for each position
-                for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
+                for (var positionIndex = stoppingDecision + 1; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
                 {
                     exponentialSmoothing[positionIndex] = alpha * acceptedClone[positionIndex] + (1 - alpha) * exponentialSmoothing[positionIndex - 1];
                     exponentialSmoothingAccumulated[positionIndex] += exponentialSmoothing[positionIndex];
@@ -58,14 +58,14 @@ namespace MonteCarloDecider
                 exponentialSmoothingAccumulated[positionIndex] = exponentialSmoothing[positionIndex];
             }
 
-            for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
+            for (var positionIndex = stoppingDecision + 1; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
             {
                 exponentialSmoothingAccumulated[positionIndex] /= NumOfVectors;
             }
 
             bool foundBetter = false;
             var currentES = exponentialSmoothingAccumulated[stoppingDecision];
-            for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
+            for (var positionIndex = stoppingDecision + 1; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
             {
                 if (exponentialSmoothingAccumulated[positionIndex] < currentES)
                 {
