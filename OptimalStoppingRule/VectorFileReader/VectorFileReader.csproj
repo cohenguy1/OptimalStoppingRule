@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CE91CD4B-245C-4637-BE4E-A46F8C248997}</ProjectGuid>
+    <ProjectGuid>{062FBE47-1AC2-4076-BFC4-7B621D04FFAC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RandomVectors</RootNamespace>
-    <AssemblyName>RandomVectors</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>RestaurantSingleRun</RootNamespace>
+    <AssemblyName>RestaurantSingleRun</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,9 +50,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\RestaurantCommon.csproj">
+    <ProjectReference Include="..\RestaurantCommon\RestaurantCommon.csproj">
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>RestaurantCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonteCarloDecider\MonteCarloDecider.csproj">
+      <Project>{6419f5be-12a3-4a0a-8767-ac42ef8e4e05}</Project>
+      <Name>MonteCarloDecider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,6 +16,7 @@ namespace RandomVectors
             
             var positionCandidates = Generation.GenerateCandidatesForPosition();
             Random random = new Random();
+            Random rand2 = new Random();
 
             int[] acceptedCount = new int[10];
 
@@ -46,7 +47,7 @@ namespace RandomVectors
                             for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
                             {
                                 var currentCandidate = positionCandidates[candidateIndex];
-                                DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate);
+                                DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand2);
 
                                 if (currentCandidate.CandidateAccepted)
                                 {

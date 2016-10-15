@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5F7FDAFE-C368-4CF7-92F4-A8DA4DD09D0B}</ProjectGuid>
+    <ProjectGuid>{FF2BD2FB-91BE-4FCF-A799-A6047B20CA89}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalStoppingRule</RootNamespace>
-    <AssemblyName>OptimalStoppingRule</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>RestaurantGameOptimalStopping</RootNamespace>
+    <AssemblyName>RestaurantGameOptimalStopping</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,7 +50,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\RestaurantCommon.csproj">
+    <ProjectReference Include="..\RestaurantCommon\RestaurantCommon.csproj">
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>RestaurantCommon</Name>
     </ProjectReference>

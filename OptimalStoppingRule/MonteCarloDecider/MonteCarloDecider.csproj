@@ -51,7 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\RestaurantCommon.csproj">
+    <ProjectReference Include="..\RestaurantCommon\RestaurantCommon.csproj">
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>RestaurantCommon</Name>
     </ProjectReference>

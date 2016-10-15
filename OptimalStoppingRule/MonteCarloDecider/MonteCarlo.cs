@@ -41,7 +41,7 @@ namespace MonteCarloDecider
                 {
                     Generation.InitCandidatesForPosition(positionCandidates, random);
 
-                    acceptedClone[positionIndex] = SelectCandidate(positionCandidates, candidatesByNow, positionIndex);
+                    acceptedClone[positionIndex] = SelectCandidate(positionCandidates, candidatesByNow, positionIndex, random);
                 }
 
                 // determine the exponential smoothing according to the new randomized candidates, for each position
@@ -76,13 +76,13 @@ namespace MonteCarloDecider
             return !foundBetter;
         }
 
-        private static int SelectCandidate(List<Candidate> positionCandidates, List<Candidate> candidatesByNow, int positionIndex)
+        private static int SelectCandidate(List<Candidate> positionCandidates, List<Candidate> candidatesByNow, int positionIndex, Random random)
         {
             candidatesByNow.Clear();
             for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
             {
                 var currentCandidate = positionCandidates[candidateIndex];
-                DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate);
+                DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, random);
 
                 if (currentCandidate.CandidateAccepted)
                 {

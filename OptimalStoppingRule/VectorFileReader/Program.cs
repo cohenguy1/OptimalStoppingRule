@@ -16,6 +16,8 @@ namespace VectorFileReader
             FileStream fs = new FileStream("Vectors.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
             Random random = new Random();
+            Random rand2 = new Random();
+
             bool terminate;
 
             double[] acceptedCandidatesDistribution = new double[11];
@@ -25,6 +27,8 @@ namespace VectorFileReader
 
             int[] optimalStopPositionAcc = new int[11];
             int[] mcStopPositionAcc = new int[11];
+
+            var diff = 0;
 
             FileStream fs2 = new FileStream("VectorsOutput.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
@@ -36,7 +40,7 @@ namespace VectorFileReader
 
             while (vectorNum <= 50)
             {
-                int[] accepted = ReadNextVector(sr, out terminate, ref vectorNum);
+                int[] accepted = ReadNextVector(sr, out terminate, ref vectorNum, rand2);
 
                 if (terminate)
                 {
@@ -55,6 +59,11 @@ namespace VectorFileReader
                 int mcStoppingPosition = GetMonteCarloStopping(accepted, random) + 1;
                 mcStopPositionAcc[mcStoppingPosition]++;
                 mcStopRankingAcc[accepted[mcStoppingPosition - 1]]++;
+
+                if (optimalStoppingPosition != mcStoppingPosition)
+                {
+                    diff++;
+                }
 
                 sw.Write(vectorNum + "\t" + optimalStoppingPosition + "\t" + mcStoppingPosition + "\t\t");
 
@@ -81,6 +90,11 @@ namespace VectorFileReader
             sw.WriteLine();
             PrintSummary(sw, optimalStopRankingAcc, mcStopRankingAcc, "Ranking");
 
+            sw.WriteLine();
+            sw.WriteLine();
+
+            sw.WriteLine("MC and Optimal differ by " + diff + " vectors.");
+
             Console.WriteLine("Finished at: " + DateTime.Now);
             Console.WriteLine("Total Time: " + (DateTime.Now - startTime).TotalMinutes + " minutes");
 
@@ -105,7 +119,7 @@ namespace VectorFileReader
             sw.Write("\t\t");
             for (int i = 1; i <= 10; i++)
             {
-                sw.Write(i.ToString("0.00") + "\t");
+                sw.Write(i + "\t");
             }
             sw.WriteLine();
 
@@ -119,7 +133,7 @@ namespace VectorFileReader
             sw.Write("\t\t");
             for (int i = 1; i <= 10; i++)
             {
-                sw.Write(acceptedCandidatesDistribution[i] + "\t");
+                sw.Write(acceptedCandidatesDistribution[i].ToString("0.00") + "\t");
             }
             sw.WriteLine();
         }
@@ -176,7 +190,7 @@ namespace VectorFileReader
 
         private static int GetMonteCarloStopping(int[] accepted, Random random)
         {
-            if (accepted[0] <= 2)
+            if (accepted[0] <= 3)
             {
                 return 0;
             }
@@ -196,7 +210,7 @@ namespace VectorFileReader
             return stoppingDecision;
         }
 
-        public static int[] ReadNextVector(StreamReader sr, out bool terminate, ref int vectorNum)
+        public static int[] ReadNextVector(StreamReader sr, out bool terminate, ref int vectorNum, Random rand)
         {
             terminate = false;
 
@@ -263,7 +277,7 @@ namespace VectorFileReader
                 for (i = 0; i < intRanks.Length; i++)
                 {
                     var newCandidate = new Candidate() { CandidateRank = intRanks[i] };
-                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, newCandidate);
+                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, newCandidate, rand);
 
                     if (newCandidate.CandidateAccepted)
                     {
@@ -285,24 +299,24 @@ namespace VectorFileReader
 
     public class Optimal
     {
+        private static Dictionary<int, int> minimalRankForAsk = new Dictionary<int, int>()
+        {
+            {10, 10 },
+            {9, 4 },
+            {8, 2 },
+            {7, 1 },
+            {6, 1 },
+            {5, 1 },
+            {4, 1 },
+            {3, 1 },
+            {2, 1 },
+            {1, 1 }
+        };
+
         public static bool ShouldAsk(int[] accepted, int stoppingDecision)
         {
-            if (accepted[stoppingDecision] == 1)
-            {
-                return true;
-            }
-
-            if (stoppingDecision + 1 == Constants.TotalCandidates)
-            {
-                return true;
-            }
-
-            if (stoppingDecision + 1 == Constants.TotalCandidates - 1)
-            {
-                return accepted[stoppingDecision] <= 3;
-            }
-
-            return false;
+            var ask = accepted[stoppingDecision] <= minimalRankForAsk[stoppingDecision + 1];
+            return ask;
         }
     }
 }

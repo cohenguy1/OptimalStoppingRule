@@ -43,18 +43,22 @@ namespace RestaurantCommon
 
             for (var i = 2; i <= TotalCandidates; i++)
             {
+                //StoppingRule[i] = Math.Min(10, StoppingRule[i] + 1);
                 if (StoppingRule[i] == 0)
                 {
-                    StoppingRule[i] = 1;
+                    StoppingRule[i]++;
                 }
+
             }
+            
+            var x = 3;
         }
 
-        public void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate)
+        public void DetermineCandidateRank(List<Candidate> candidatesByNow, Candidate newCandidate, Random rand)
         {
             int newCandidateIndex = InsertNewCandidate(candidatesByNow, newCandidate);
 
-            var accepted = Decide(candidatesByNow, newCandidateIndex);
+            var accepted = Decide(candidatesByNow, newCandidateIndex, rand);
 
             newCandidate.CandidateAccepted = accepted;
         }
@@ -77,11 +81,19 @@ namespace RestaurantCommon
         }
 
 
-        public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex)
+        public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex, Random rand)
         {
             if (candidatesByNow.Count == Constants.TotalCandidates)
             {
                 return true;
+            }
+
+            if (candidatesByNow.Count == 1)
+            {
+                if (rand.NextDouble() < 0.3)
+                {
+                    return true;
+                }
             }
 
             return (newCandidateIndex + 1 <= StoppingRule[candidatesByNow.Count]);

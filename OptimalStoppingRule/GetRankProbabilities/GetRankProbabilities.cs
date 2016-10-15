@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OptimalStoppingRule
 {
-    public class Program
+    public class GetRankProbabilities
     {
         public const int TotalCandidates = Constants.TotalCandidates;
 
@@ -38,7 +38,10 @@ namespace OptimalStoppingRule
 
             double[] validation = new double[10];
 
+            double[] decisionStoppingPosition = new double[11];
+
             Random random = new Random();
+            Random rand2 = new Random();
 
             for (long index = 0; index < NumberOfTrials; index++)
             {
@@ -75,11 +78,12 @@ namespace OptimalStoppingRule
                 for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
                 {
                     var currentCandidate = positionCandidates[candidateIndex];
-                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate);
+                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand2);
 
                     if (currentCandidate.CandidateAccepted)
                     {
                         acceptedCount[currentCandidate.CandidateRank - 1]++;
+                        decisionStoppingPosition[candidatesByNow.Count]++;
                         break;
                     }
                 }
@@ -99,6 +103,12 @@ namespace OptimalStoppingRule
                 validation[i] /= NumberOfTrials;
 
                 sw.WriteLine("Validation " + (i + 1) + ": " + validation[i]);
+            }
+
+            for (int i = 1; i <= TotalCandidates; i++)
+            {
+                decisionStoppingPosition[i] /= NumberOfTrials;
+                sw.WriteLine("Decision Stopping Position " + (i) + ": " + decisionStoppingPosition[i]);
             }
 
             sw.Close();

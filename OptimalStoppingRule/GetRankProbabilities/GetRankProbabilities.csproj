@@ -4,14 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2A1343C1-20BF-4269-ADCC-26EA7C8AAD0D}</ProjectGuid>
+    <ProjectGuid>{5F7FDAFE-C368-4CF7-92F4-A8DA4DD09D0B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonteCarloReader</RootNamespace>
-    <AssemblyName>MonteCarloReader</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>OptimalStoppingRule</RootNamespace>
+    <AssemblyName>OptimalStoppingRule</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,24 +44,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="GetRankProbabilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\RestaurantCommon.csproj">
+    <ProjectReference Include="..\RestaurantCommon\RestaurantCommon.csproj">
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>RestaurantCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonteCarloDecider\MonteCarloDecider.csproj">
-      <Project>{6419f5be-12a3-4a0a-8767-ac42ef8e4e05}</Project>
-      <Name>MonteCarloDecider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RestaurantSingleRun\VectorFileReader.csproj">
-      <Project>{062fbe47-1ac2-4076-bfc4-7b621d04ffac}</Project>
-      <Name>VectorFileReader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
