@@ -13,27 +13,27 @@ namespace MonteCarloDecider
         {
             int[] accepted = new int[RestaurantConstants.TotalCandidates];
 
-            var stoppingDecision = 0;
+            var stoppingDecision = 1;
             Random random = new Random();
 
-            for (int i = 1; i <= 10; i++)
+            for (int i = 4; i <= 10; i++)
             {
-                //for (int j = 1; j <= 10; j++)
-                //{
+                for (int j = 1; j <= 10; j++)
+                {
                     accepted[0] = i;
-                    //accepted[1] = j;
+                    accepted[1] = j;
 
                     DateTime now = DateTime.Now;
                     bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision, random);
                     var dt = DateTime.Now - now;
 
-                    Console.WriteLine(i /*+ "," + j*/ + " - ask: " + shouldAsk + " Time for calculation: " + dt.TotalSeconds);
+                    Console.WriteLine(i + "," + j + " - ask: " + shouldAsk + " Time for calculation: " + dt.TotalSeconds);
 
                     if (!shouldAsk)
                     {
                         break;
                     }
-                //}
+                }
             }
 
             Console.ReadLine();

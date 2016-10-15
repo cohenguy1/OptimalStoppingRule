@@ -11,6 +11,8 @@ namespace MonteCarloDecider
     {
         public const int NumOfVectors = 1000000;
 
+        public const double alpha = 0.45;
+
         public static bool ShouldAsk(int[] accepted, int stoppingDecision, Random random)
         {
             var positionCandidates = Generation.GenerateCandidatesForPosition();
@@ -21,7 +23,6 @@ namespace MonteCarloDecider
 
             int[] acceptedClone = cloneArray(accepted);
 
-            var alpha = 0.45;
             for (var positionIndex = 0; positionIndex <= stoppingDecision; positionIndex++)
             {
                 if (positionIndex == 0)
