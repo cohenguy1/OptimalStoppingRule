@@ -48,11 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Candidate.cs" />
-    <Compile Include="CandidateState.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DecisionMaker.cs" />
     <Compile Include="Generation.cs" />
-    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
