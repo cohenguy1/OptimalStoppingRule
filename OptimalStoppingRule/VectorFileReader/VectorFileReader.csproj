@@ -7,8 +7,8 @@
     <ProjectGuid>{062FBE47-1AC2-4076-BFC4-7B621D04FFAC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RestaurantSingleRun</RootNamespace>
-    <AssemblyName>RestaurantSingleRun</AssemblyName>
+    <RootNamespace>VectorFileReader</RootNamespace>
+    <AssemblyName>VectorFileReader</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Optimal.cs" />
+    <Compile Include="RestaurantVectorFileReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

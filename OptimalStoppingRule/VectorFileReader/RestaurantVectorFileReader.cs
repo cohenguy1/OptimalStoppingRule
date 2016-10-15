@@ -296,27 +296,4 @@ namespace VectorFileReader
         }
 
     }
-
-    public class Optimal
-    {
-        private static Dictionary<int, int> minimalRankForAsk = new Dictionary<int, int>()
-        {
-            {10, 10 },
-            {9, 4 },
-            {8, 2 },
-            {7, 1 },
-            {6, 1 },
-            {5, 1 },
-            {4, 1 },
-            {3, 1 },
-            {2, 1 },
-            {1, 1 }
-        };
-
-        public static bool ShouldAsk(int[] accepted, int stoppingDecision)
-        {
-            var ask = accepted[stoppingDecision] <= minimalRankForAsk[stoppingDecision + 1];
-            return ask;
-        }
-    }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantGameOptimalStopping
 {
-    class Program
+    class RateDecisionForOptimal
     {
         public const int Samples = 10;
 
@@ -16,16 +16,16 @@ namespace RestaurantGameOptimalStopping
         public static Dictionary<int, double> ChosenRankProbabilities = new Dictionary<int, double>()
         {
             /*10 modified*/
-            {1, 0.1998931 },
-            {2, 0.1724716 },
-            {3, 0.1426737 },
-            {4, 0.114851 },
-            {5, 0.0929127 },
-            {6, 0.0759073 },
-            {7, 0.0626246 },
-            {8, 0.0536803 },
-            {9, 0.0459693 },
-            {10, 0.0390164 },
+            {1, 0.2117584 },
+            {2, 0.180757 },
+            {3, 0.1477834 },
+            {4, 0.1165765 },
+            {5, 0.092037 },
+            {6, 0.0729026 },
+            {7, 0.0584233 },
+            {8, 0.0484167 },
+            {9, 0.0396285 },
+            {10, 0.0317166 },
             /* 15 modified
             {1, 0.20175 },
             {2, 0.169805556 },
