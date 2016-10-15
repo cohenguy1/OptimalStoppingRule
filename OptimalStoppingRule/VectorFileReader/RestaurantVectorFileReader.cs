@@ -76,24 +76,13 @@ namespace VectorFileReader
                 sw.WriteLine();
             }
 
-            sw.WriteLine();
-            sw.WriteLine();
+            SummaryPrinter.PrintSummary(sw, acceptedCandidatesDistribution, vectorNum);
 
-            PrintSummary(sw, acceptedCandidatesDistribution, vectorNum);
+            SummaryPrinter.PrintSummary(sw, optimalStopPositionAcc, mcStopPositionAcc, "Position");
 
-            sw.WriteLine();
-            sw.WriteLine();
+            SummaryPrinter.PrintSummary(sw, optimalStopRankingAcc, mcStopRankingAcc, "Ranking");
 
-            PrintSummary(sw, optimalStopPositionAcc, mcStopPositionAcc, "Position");
-
-            sw.WriteLine();
-            sw.WriteLine();
-            PrintSummary(sw, optimalStopRankingAcc, mcStopRankingAcc, "Ranking");
-
-            sw.WriteLine();
-            sw.WriteLine();
-
-            sw.WriteLine("MC and Optimal differ by " + diff + " vectors.");
+            SummaryPrinter.PrintDiff(sw, diff);
 
             Console.WriteLine("Finished at: " + DateTime.Now);
             Console.WriteLine("Total Time: " + (DateTime.Now - startTime).TotalMinutes + " minutes");
@@ -105,70 +94,6 @@ namespace VectorFileReader
             fs2.Close();
 
             Console.ReadLine();
-        }
-
-        private static void PrintSummary(StreamWriter sw, double[] acceptedCandidatesDistribution, int numOfVectors)
-        {
-            for (int i = 0; i < acceptedCandidatesDistribution.Length; i++)
-            {
-                acceptedCandidatesDistribution[i] /= ((double)Constants.TotalCandidates * numOfVectors / 100);
-            }
-
-            sw.WriteLine("Summary by Accepted:");
-            sw.WriteLine();
-            sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write(i + "\t");
-            }
-            sw.WriteLine();
-
-            sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write("===\t");
-            }
-            sw.WriteLine();
-
-            sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write(acceptedCandidatesDistribution[i].ToString("0.00") + "\t");
-            }
-            sw.WriteLine();
-        }
-
-        private static void PrintSummary(StreamWriter sw, int[] optimalStopPositionAcc, int[] mcStopPositionAcc, string aspect)
-        {
-            sw.WriteLine("Summary by " + aspect);
-            sw.WriteLine();
-            sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write(i + "\t");
-            }
-            sw.WriteLine();
-
-            sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write("===\t");
-            }
-            sw.WriteLine();
-
-            sw.Write("Optimal\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write(optimalStopPositionAcc[i] + "\t");
-            }
-            sw.WriteLine();
-
-            sw.Write("MC\t\t");
-            for (int i = 1; i <= 10; i++)
-            {
-                sw.Write(mcStopPositionAcc[i] + "\t");
-            }
-            sw.WriteLine();
         }
 
         private static int GetOptimalStopping(int[] accepted)

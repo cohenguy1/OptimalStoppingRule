@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace RandomVectors
+namespace RandomVectorsGenerator
 {
-    public class Program
+    public class RandomVectors
     {
         public const int NumOfVectors = 50;
 
@@ -13,18 +13,21 @@ namespace RandomVectors
 
         public static void Main(string[] args)
         {
-            
+
             var positionCandidates = Generation.GenerateCandidatesForPosition();
             Random random = new Random();
             Random rand2 = new Random();
 
-            int[] acceptedCount = new int[10];
+            int[] acceptedCountOnFirst = new int[10];
+            int[] acceptedCountOnSecond = new int[10];
 
-            while (acceptedCount[0] > 8 || acceptedCount[0] == 0)
+            while (acceptedCountOnFirst[0] > 8 || acceptedCountOnFirst[0] == 0 ||
+                   acceptedCountOnSecond[0] > 8)
             {
-                for (int i = 0; i < acceptedCount.Length; i++)
+                for (int i = 0; i < acceptedCountOnFirst.Length; i++)
                 {
-                    acceptedCount[i] = 0;
+                    acceptedCountOnFirst[i] = 0;
+                    acceptedCountOnSecond[i] = 0;
                 }
 
                 if (File.Exists(VectorsFile))
@@ -43,18 +46,11 @@ namespace RandomVectors
                         Generation.InitCandidatesForPosition(positionCandidates, random);
                         if (positionIndex == 0)
                         {
-                            var candidatesByNow = new List<Candidate>();
-                            for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
-                            {
-                                var currentCandidate = positionCandidates[candidateIndex];
-                                DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand2);
-
-                                if (currentCandidate.CandidateAccepted)
-                                {
-                                    acceptedCount[currentCandidate.CandidateRank - 1]++;
-                                    break;
-                                }
-                            }
+                            IncreaseAcceptedCount(acceptedCountOnFirst, positionCandidates, rand2);
+                        }
+                        else if (positionIndex == 1)
+                        {
+                            IncreaseAcceptedCount(acceptedCountOnSecond, positionCandidates, rand2);
                         }
                         WriteVector(positionCandidates, sw);
                         sw.WriteLine();
@@ -70,7 +66,23 @@ namespace RandomVectors
 
             Console.WriteLine("Completed!");
             Console.ReadLine();
-            
+
+        }
+
+        private static void IncreaseAcceptedCount(int[] acceptedCount, List<Candidate> positionCandidates, Random rand)
+        {
+            var candidatesByNow = new List<Candidate>();
+            for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
+            {
+                var currentCandidate = positionCandidates[candidateIndex];
+                DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand);
+
+                if (currentCandidate.CandidateAccepted)
+                {
+                    acceptedCount[currentCandidate.CandidateRank - 1]++;
+                    break;
+                }
+            }
         }
 
         private static void WriteVector(List<Candidate> positionCandidates, StreamWriter sw)
