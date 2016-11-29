@@ -8,7 +8,7 @@ namespace RestaurantCommon
 {
     public class DecisionMaker
     {
-        public const int TotalCandidates = RestaurantConstants.TotalCandidates;
+        public const int TotalCandidates = Constants.TotalCandidates;
 
         private static double[] c = new double[TotalCandidates + 1];
 
@@ -44,11 +44,11 @@ namespace RestaurantCommon
            
             for (var i = 2; i <= TotalCandidates; i++)
             {
-                StoppingRule[i] = Math.Min(RestaurantConstants.TotalCandidates, StoppingRule[i] + 1);
+                StoppingRule[i] = Math.Min(Constants.TotalCandidates, StoppingRule[i] + 1);
                 
                 if (i >= 4)
                 {
-                    StoppingRule[i] = Math.Min(RestaurantConstants.TotalCandidates, StoppingRule[i] + 1);
+                    StoppingRule[i] = Math.Min(Constants.TotalCandidates, StoppingRule[i] + 1);
                 }
             }
 
@@ -84,7 +84,7 @@ namespace RestaurantCommon
 
         public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex, Random rand)
         {
-            if (candidatesByNow.Count == RestaurantConstants.TotalCandidates)
+            if (candidatesByNow.Count == Constants.TotalCandidates)
             {
                 return true;
             }

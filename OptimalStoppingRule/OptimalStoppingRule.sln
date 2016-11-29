@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifromDistributionStopping
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateDecisionForOptimal", "RateDecisionForOptimal\RateDecisionForOptimal.csproj", "{FF2BD2FB-91BE-4FCF-A799-A6047B20CA89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomVectorsGenerator", "RandomVectorsGenerator\RandomVectorsGenerator.csproj", "{CE91CD4B-245C-4637-BE4E-A46F8C248997}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantRandomVectorsGenerator", "RestaurantRandomVectorsGenerator\RestaurantRandomVectorsGenerator.csproj", "{CE91CD4B-245C-4637-BE4E-A46F8C248997}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantCommon", "RestaurantCommon\RestaurantCommon.csproj", "{C2C8F49C-3355-4D49-92A7-331578D43B8B}"
 EndProject
@@ -18,6 +18,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildSql", "BuildSql\BuildSql.csproj", "{9C865637-3F92-4F0D-B129-EA8BF5B7A342}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonteCarloDecider", "MonteCarloDecider\MonteCarloDecider.csproj", "{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsRandomVectorsGenerator", "InvestmentsRandomVectorsGenerator\InvestmentsRandomVectorsGenerator.csproj", "{71B29132-9337-41F1-A8E3-E9CF50E61322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Restaurant", "Restaurant", "{5C147244-F87A-4B0F-A892-B8B8AA65654A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Investments", "Investments", "{399F7E6D-7382-4B25-9FDE-1EF48882D9C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsSqlBuilder", "InvestmentsSqlBuilder\InvestmentsSqlBuilder.csproj", "{2364516C-9BA2-4500-985A-557DDC86F90D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsOptimalStoppingDecision", "OptimalStoppingDecision\InvestmentsOptimalStoppingDecision.csproj", "{0DEAACB5-5C86-425A-B92F-352916E8180F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,8 +67,30 @@ Global
 		{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71B29132-9337-41F1-A8E3-E9CF50E61322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71B29132-9337-41F1-A8E3-E9CF50E61322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71B29132-9337-41F1-A8E3-E9CF50E61322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71B29132-9337-41F1-A8E3-E9CF50E61322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2364516C-9BA2-4500-985A-557DDC86F90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2364516C-9BA2-4500-985A-557DDC86F90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2364516C-9BA2-4500-985A-557DDC86F90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2364516C-9BA2-4500-985A-557DDC86F90D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DEAACB5-5C86-425A-B92F-352916E8180F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DEAACB5-5C86-425A-B92F-352916E8180F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DEAACB5-5C86-425A-B92F-352916E8180F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DEAACB5-5C86-425A-B92F-352916E8180F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5F7FDAFE-C368-4CF7-92F4-A8DA4DD09D0B} = {5C147244-F87A-4B0F-A892-B8B8AA65654A}
+		{FF2BD2FB-91BE-4FCF-A799-A6047B20CA89} = {5C147244-F87A-4B0F-A892-B8B8AA65654A}
+		{CE91CD4B-245C-4637-BE4E-A46F8C248997} = {5C147244-F87A-4B0F-A892-B8B8AA65654A}
+		{062FBE47-1AC2-4076-BFC4-7B621D04FFAC} = {5C147244-F87A-4B0F-A892-B8B8AA65654A}
+		{9C865637-3F92-4F0D-B129-EA8BF5B7A342} = {5C147244-F87A-4B0F-A892-B8B8AA65654A}
+		{71B29132-9337-41F1-A8E3-E9CF50E61322} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
+		{2364516C-9BA2-4500-985A-557DDC86F90D} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
+		{0DEAACB5-5C86-425A-B92F-352916E8180F} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
 	EndGlobalSection
 EndGlobal

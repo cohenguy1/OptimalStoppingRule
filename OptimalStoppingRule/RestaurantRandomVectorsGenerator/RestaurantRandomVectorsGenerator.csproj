@@ -7,8 +7,8 @@
     <ProjectGuid>{CE91CD4B-245C-4637-BE4E-A46F8C248997}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RandomVectors</RootNamespace>
-    <AssemblyName>RandomVectors</AssemblyName>
+    <RootNamespace>RestaurantRandomVectorsGenerator</RootNamespace>
+    <AssemblyName>RestaurantRandomVectorsGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RandomVectors.cs" />
+    <Compile Include="RestaurantRandomVectors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

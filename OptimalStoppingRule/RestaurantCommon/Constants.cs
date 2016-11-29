@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace RestaurantCommon
 {
-    public class RestaurantConstants
+    public class Constants
     {
         public const int NumOfVectors = 50;
 
         public const int TotalCandidates = 10;
 
         public const int TotalPositions = 10;
+
+        public const int TotalInvestmentsTurns = 20;
+
+        public const int NumOfChanges = 100;
     }
 }

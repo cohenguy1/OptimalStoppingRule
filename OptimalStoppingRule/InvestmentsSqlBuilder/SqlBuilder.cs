@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BuildSql
+namespace InvestmentsSqlBuilder
 {
-    class Program
+    class SqlBuilder
     {
         public static void Main(string[] args)
         {
@@ -18,10 +18,9 @@ namespace BuildSql
             FileStream fs2 = new FileStream("SqlCommands.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            int[] intRanks = new int[Constants.TotalCandidates];
+            double[] changes = new double[Constants.TotalInvestmentsTurns];
 
             int vectorNumber = 0;
-            int positionNumber = 0;
 
             sw.WriteLine("delete from Vectors;");
             sw.WriteLine();
@@ -35,7 +34,6 @@ namespace BuildSql
 
                     if (line.StartsWith("--"))
                     {
-                        positionNumber = 0;
                         vectorNumber++;
                     }
 
@@ -43,35 +41,38 @@ namespace BuildSql
                     continue;
                 }
 
-                string[] ranks = line.Split(' ');
+                string[] changesStr = line.Split(' ');
 
                 int i = 0;
-                foreach (string rank in ranks)
+                foreach (string changeStr in changesStr)
                 {
-                    if (rank == string.Empty)
+                    if (changeStr == string.Empty)
                     {
                         continue;
                     }
 
-                    intRanks[i] = int.Parse(rank);
+                    changes[i] = double.Parse(changeStr);
                     i++;
                 }
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append("Insert Into Vectors(VectorNum, PositionNum, Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, " +
-                    "Rank7, Rank8, Rank9, Rank10) Values (");
-                sb.Append(vectorNumber + ", ");
-                sb.Append(positionNumber + ", ");
+                sb.Append("Insert Into Vectors(VectorNum");
 
-                for (int j = 0; j < intRanks.Length - 1; j++)
+                for (int j = 1; j <= Constants.TotalInvestmentsTurns; j++)
                 {
-                    sb.Append(intRanks[j] + ", ");
+                    sb.Append(", Turn" + j);
                 }
-                sb.Append(intRanks[intRanks.Length - 1] + ");");
+                sb.Append(") Values (");
+
+                sb.Append(vectorNumber);
+
+                for (int j = 0; j < Constants.TotalInvestmentsTurns; j++)
+                {
+                    sb.Append(", " + changes[j]);
+                }
+                sb.Append(");");
 
                 sw.WriteLine(sb.ToString());
-
-                positionNumber++;
 
                 line = sr.ReadLine();
             }

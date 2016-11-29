@@ -9,10 +9,21 @@ namespace RestaurantGameOptimalStopping
 {
     class RateDecisionForOptimal
     {
-        public const int NumOfRanks = RestaurantConstants.TotalCandidates;
+        public const int NumOfRanks = Constants.TotalCandidates;
 
         public static Dictionary<int, double> ChosenRankProbabilities = new Dictionary<int, double>()
         {
+            /*{1, 0.1 },
+            {2, 0.1 },
+            {3, 0.1 },
+            {4, 0.1 },
+            {5, 0.1 },
+            {6, 0.1 },
+            {7, 0.1 },
+            {8, 0.1 },
+            {9, 0.1 },
+            {10, 0.1 },*/
+
             /*10 modified*/
             {1, 0.1968508 },
             {2, 0.1749329 },
@@ -65,22 +76,39 @@ namespace RestaurantGameOptimalStopping
             {20, 0.000776805 }*/
         };
 
-        public static int[] stoppingValues = new int[RestaurantConstants.TotalPositions];
+        public static int[] stoppingValues = new int[Constants.TotalPositions];
 
         public static void Main(string[] args)
         {
             var expectation = GetExpectation(ChosenRankProbabilities);
 
-            stoppingValues[RestaurantConstants.TotalPositions - 1] = NumOfRanks;
+            stoppingValues[Constants.TotalPositions - 1] = NumOfRanks;
 
-            for (int i = RestaurantConstants.TotalPositions - 2; i >= 0; i--)
+            double[] expectedRankTi = new double[Constants.TotalPositions + 1];
+
+            for (int i = Constants.TotalPositions - 2; i >= 0; i--)
             {
-                var stoppingValue = GetProbabilityThatRankLowerOrEqualsThan(stoppingValues[i + 1]) * GetExpectationOrRankLowerOrEquals(stoppingValues[i + 1])
-                                    + GetProbabilityThatRankGreater(stoppingValues[i + 1]) * stoppingValues[i + 1];
-                stoppingValues[i] = stoppingValue > 1 ? (int)stoppingValue : 1;
+                for (int j = 1; j <= stoppingValues[i + 1]; j++)
+                {
+                    expectedRankTi[j] = GetExpectedRatingLowerThanOrEquals(j)
+                                    + GetProbabilityThatRankGreater(j) * stoppingValues[i + 1];
+                }
+
+                stoppingValues[i] = (int)expectedRankTi[1];
+                for (int j = 1; j <= stoppingValues[i + 1]; j++)
+                {
+                    if (expectedRankTi[j] < stoppingValues[i])
+                    {
+                        stoppingValues[i] = (int)expectedRankTi[j];
+                    }
+                    if (expectedRankTi[j] < 1)
+                    {
+                        stoppingValues[i] = 1;
+                    }
+                }
             }
 
-            for (int i = RestaurantConstants.TotalPositions - 1; i >= 0; i--)
+            for (int i = Constants.TotalPositions - 1; i >= 0; i--)
             {
                 Console.WriteLine((i + 1) + " Stopping Value: " + stoppingValues[i]);
             }
@@ -89,6 +117,18 @@ namespace RestaurantGameOptimalStopping
 
 
             Console.ReadLine();
+        }
+
+        private static double GetExpectedRatingLowerThanOrEquals(int rank)
+        {
+            double expectation = 0;
+
+            for (int i = 1; i <= rank; i++)
+            {
+                expectation += ChosenRankProbabilities[i] * i;
+            }
+
+            return expectation;
         }
 
         private static double GetProbabilityThatRankGreater(int rank)

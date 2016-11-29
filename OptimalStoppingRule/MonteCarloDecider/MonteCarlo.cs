@@ -46,7 +46,7 @@ namespace MonteCarloDecider
                 }
 
                 // determine the exponential smoothing according to the new randomized candidates, for each position
-                for (var positionIndex = stoppingDecision + 1; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
+                for (var positionIndex = stoppingDecision + 1; positionIndex < Constants.TotalPositions; positionIndex++)
                 {
                     exponentialSmoothing[positionIndex] = alpha * acceptedClone[positionIndex] + (1 - alpha) * exponentialSmoothing[positionIndex - 1];
                     exponentialSmoothingAccumulated[positionIndex] += exponentialSmoothing[positionIndex];
@@ -59,14 +59,14 @@ namespace MonteCarloDecider
                 exponentialSmoothingAccumulated[positionIndex] = exponentialSmoothing[positionIndex];
             }
 
-            for (var positionIndex = stoppingDecision + 1; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
+            for (var positionIndex = stoppingDecision + 1; positionIndex < Constants.TotalPositions; positionIndex++)
             {
                 exponentialSmoothingAccumulated[positionIndex] /= NumOfVectors;
             }
 
             bool foundBetter = false;
             var currentES = exponentialSmoothingAccumulated[stoppingDecision];
-            for (var positionIndex = stoppingDecision + 1; positionIndex < RestaurantConstants.TotalPositions; positionIndex++)
+            for (var positionIndex = stoppingDecision + 1; positionIndex < Constants.TotalPositions; positionIndex++)
             {
                 if (exponentialSmoothingAccumulated[positionIndex] < currentES)
                 {
@@ -80,7 +80,7 @@ namespace MonteCarloDecider
         private static int SelectCandidate(List<Candidate> positionCandidates, List<Candidate> candidatesByNow, int positionIndex, Random random)
         {
             candidatesByNow.Clear();
-            for (int candidateIndex = 0; candidateIndex < RestaurantConstants.TotalCandidates; candidateIndex++)
+            for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
             {
                 var currentCandidate = positionCandidates[candidateIndex];
                 DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, random);
@@ -96,7 +96,7 @@ namespace MonteCarloDecider
 
         private static int[] cloneArray(int[] accepted)
         {
-            int[] newArray = new int[RestaurantConstants.TotalPositions];
+            int[] newArray = new int[Constants.TotalPositions];
 
             for (int i = 0; i < 10; i++)
             {
