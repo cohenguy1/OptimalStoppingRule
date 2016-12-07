@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF2BD2FB-91BE-4FCF-A799-A6047B20CA89}</ProjectGuid>
+    <ProjectGuid>{3A01CA81-C005-420F-8DE0-6C4830CCCE00}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RestaurantGameOptimalStopping</RootNamespace>
-    <AssemblyName>RestaurantGameOptimalStopping</AssemblyName>
+    <RootNamespace>InvestmentsChangesGenerator</RootNamespace>
+    <AssemblyName>InvestmentsChangesGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RateDecisionForOptimal.cs" />
+    <Compile Include="ChangesGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

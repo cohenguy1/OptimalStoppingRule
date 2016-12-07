@@ -1,4 +1,4 @@
-﻿using RestaurantCommon;
+﻿using GamesCommon;
 using System;
 using System.Collections.Generic;
 using System.IO;
