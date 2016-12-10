@@ -61,7 +61,7 @@ namespace InvestmentsRandomVectorsGenerator
 
                     var change = changesList[itemToRemove];
 
-                    sw.Write(change.ToString("0.00") + " ");
+                    sw.Write(change.ToString() + " ");
 
                     changesList.RemoveAt(itemToRemove);
                 }

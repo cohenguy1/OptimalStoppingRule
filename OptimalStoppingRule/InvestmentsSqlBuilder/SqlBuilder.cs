@@ -18,7 +18,7 @@ namespace InvestmentsSqlBuilder
             FileStream fs2 = new FileStream("SqlCommands.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            double[] changes = new double[Constants.TotalInvestmentsTurns];
+            int[] changes = new int[Constants.TotalInvestmentsTurns];
 
             int vectorNumber = 0;
 
@@ -51,7 +51,7 @@ namespace InvestmentsSqlBuilder
                         continue;
                     }
 
-                    changes[i] = double.Parse(changeStr);
+                    changes[i] = int.Parse(changeStr);
                     i++;
                 }
 

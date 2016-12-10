@@ -8,29 +8,36 @@ using System.Threading.Tasks;
 
 namespace OptimalStoppingDecision
 {
-    class Program
+    class InvestmentsOptimalDecision
     {
-        public static Dictionary<double, double> ChangeProbabilities = new Dictionary<double, double>();
+        public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
 
         public static double[] stoppingValues = new double[Constants.TotalInvestmentsTurns];
 
+        public const string DecisionFile = "Optimal.txt";
+
         public static void Main(string[] args)
         {
+            if (File.Exists(DecisionFile))
+            {
+                File.Delete(DecisionFile);
+            }
+
             InitializeChangeProbabilities();
 
             var expectation = GetExpectation(ChangeProbabilities);
 
-            var minProb = ChangeProbabilities.Min(kv => kv.Key);
-            var maxProb = ChangeProbabilities.Max(kv => kv.Key);
+            var minChange = ChangeProbabilities.Min(kv => kv.Key);
+            var maxChange = ChangeProbabilities.Max(kv => kv.Key);
 
             // get worst probability
-            stoppingValues[Constants.TotalInvestmentsTurns - 1] = minProb;
+            stoppingValues[Constants.TotalInvestmentsTurns - 1] = minChange;
 
-            Dictionary<double, double> expectedChangeTi = new Dictionary<double, double>();
+            Dictionary<int, double> expectedChangeTi = new Dictionary<int, double>();
 
             for (int i = Constants.TotalInvestmentsTurns - 2; i >= 0; i--)
             {
-                for (double j = maxProb; j >= stoppingValues[i + 1]; j -= 0.01)
+                for (int j = maxChange; j >= stoppingValues[i + 1]; j -= 1)
                 {
                     if (!expectedChangeTi.ContainsKey(j))
                     {
@@ -41,8 +48,8 @@ namespace OptimalStoppingDecision
                                     + GetProbabilityThatChangeLess(j) * stoppingValues[i + 1];
                 }
 
-                stoppingValues[i] = expectedChangeTi.First().Value;
-                for (double j = maxProb; j >= stoppingValues[i + 1]; j -= 0.01)
+                stoppingValues[i] = expectedChangeTi[maxChange];
+                for (int j = maxChange; j >= stoppingValues[i + 1]; j -= 1)
                 {
                     if (expectedChangeTi[j] > stoppingValues[i])
                     {
@@ -58,6 +65,17 @@ namespace OptimalStoppingDecision
 
             Console.WriteLine("******");
 
+            FileStream output = new FileStream(DecisionFile, FileMode.CreateNew);
+            StreamWriter sw = new StreamWriter(output);
+
+            sw.WriteLine("Dictionary for probabilities: ");
+            for (int i = 0; i < Constants.TotalInvestmentsTurns; i++)
+            {
+                sw.WriteLine("{" + (i + 1) + ", " + stoppingValues[i] + " }, ");
+            }
+
+            sw.Close();
+            output.Close();
 
             Console.ReadLine();
         }
@@ -71,9 +89,7 @@ namespace OptimalStoppingDecision
             {
                 string line = sr.ReadLine();
 
-                var change = double.Parse(line);
-
-                change = Math.Round(change, 2);
+                var change = int.Parse(line);
 
                 if (!ChangeProbabilities.ContainsKey(change))
                 {
@@ -129,7 +145,7 @@ namespace OptimalStoppingDecision
             return expectation;
         }
 
-        private static double GetExpectation(Dictionary<double, double> changeProbabilities)
+        private static double GetExpectation(Dictionary<int, double> changeProbabilities)
         {
             double expectation = 0;
 

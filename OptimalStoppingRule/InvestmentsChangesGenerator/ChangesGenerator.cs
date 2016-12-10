@@ -39,7 +39,7 @@ namespace InvestmentsChangesGenerator
             count = 0;
             while (count < Constants.NumOfChanges)
             {
-                var index = r.Next(800);
+                var index = r.Next(700);
 
                 if (seenIndexes.Contains(index))
                 {

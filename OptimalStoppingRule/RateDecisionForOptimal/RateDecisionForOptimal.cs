@@ -76,7 +76,7 @@ namespace RestaurantGameOptimalStopping
             {20, 0.000776805 }*/
         };
 
-        public static int[] stoppingValues = new int[Constants.TotalPositions];
+        public static double[] stoppingValues = new double[Constants.TotalPositions];
 
         public static void Main(string[] args)
         {
@@ -94,12 +94,12 @@ namespace RestaurantGameOptimalStopping
                                     + GetProbabilityThatRankGreater(j) * stoppingValues[i + 1];
                 }
 
-                stoppingValues[i] = (int)expectedRankTi[1];
+                stoppingValues[i] = expectedRankTi[1];
                 for (int j = 1; j <= stoppingValues[i + 1]; j++)
                 {
                     if (expectedRankTi[j] < stoppingValues[i])
                     {
-                        stoppingValues[i] = (int)expectedRankTi[j];
+                        stoppingValues[i] = expectedRankTi[j];
                     }
                     if (expectedRankTi[j] < 1)
                     {
