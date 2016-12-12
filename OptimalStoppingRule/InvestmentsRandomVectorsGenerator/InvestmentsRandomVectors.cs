@@ -13,7 +13,7 @@ namespace InvestmentsRandomVectorsGenerator
     {
         public const string VectorsFile = "Vectors.txt";
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             FileStream fs = new FileStream("NasdaqChange.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
