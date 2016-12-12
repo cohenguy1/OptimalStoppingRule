@@ -64,7 +64,7 @@ namespace Investments.VectorsFileReader
 
                 sw.Write(vectorNum + "\t" + optimalStoppingPosition + "\t" + mcStoppingPosition + "\t\t");
 
-                for (int index = 0; index < Constants.TotalCandidates; index++)
+                for (int index = 0; index < Constants.TotalInvestmentsTurns; index++)
                 {
                     sw.Write(changes[index] + "\t");
                 }
