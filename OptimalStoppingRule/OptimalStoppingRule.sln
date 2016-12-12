@@ -3,35 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetRankProbabilities", "GetRankProbabilities\GetRankProbabilities.csproj", "{5F7FDAFE-C368-4CF7-92F4-A8DA4DD09D0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.GetRankProbabilities", "GetRankProbabilities\Restaurant.GetRankProbabilities.csproj", "{5F7FDAFE-C368-4CF7-92F4-A8DA4DD09D0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifromDistributionStoppingRule", "UnifromDistributionStoppingRule\UnifromDistributionStoppingRule.csproj", "{6E0D1DB0-A4F2-4D24-8103-A42AACA7F749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateDecisionForOptimal", "RateDecisionForOptimal\RateDecisionForOptimal.csproj", "{FF2BD2FB-91BE-4FCF-A799-A6047B20CA89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.OptimalStoppingDecision", "RateDecisionForOptimal\Restaurant.OptimalStoppingDecision.csproj", "{FF2BD2FB-91BE-4FCF-A799-A6047B20CA89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantRandomVectorsGenerator", "RestaurantRandomVectorsGenerator\RestaurantRandomVectorsGenerator.csproj", "{CE91CD4B-245C-4637-BE4E-A46F8C248997}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.RandomVectorsGenerator", "RestaurantRandomVectorsGenerator\Restaurant.RandomVectorsGenerator.csproj", "{CE91CD4B-245C-4637-BE4E-A46F8C248997}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesCommon", "RestaurantCommon\GamesCommon.csproj", "{C2C8F49C-3355-4D49-92A7-331578D43B8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorFileReader", "VectorFileReader\VectorFileReader.csproj", "{062FBE47-1AC2-4076-BFC4-7B621D04FFAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.VectorsFileReader", "VectorFileReader\Restaurant.VectorsFileReader.csproj", "{062FBE47-1AC2-4076-BFC4-7B621D04FFAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildSql", "BuildSql\BuildSql.csproj", "{9C865637-3F92-4F0D-B129-EA8BF5B7A342}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.BuildSql", "BuildSql\Restaurant.BuildSql.csproj", "{9C865637-3F92-4F0D-B129-EA8BF5B7A342}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantMonteCarloDecider", "MonteCarloDecider\RestaurantMonteCarloDecider.csproj", "{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.MonteCarloDecider", "MonteCarloDecider\Restaurant.MonteCarloDecider.csproj", "{6419F5BE-12A3-4A0A-8767-AC42EF8E4E05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsRandomVectorsGenerator", "InvestmentsRandomVectorsGenerator\InvestmentsRandomVectorsGenerator.csproj", "{71B29132-9337-41F1-A8E3-E9CF50E61322}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.RandomVectorsGenerator", "InvestmentsRandomVectorsGenerator\Investments.RandomVectorsGenerator.csproj", "{71B29132-9337-41F1-A8E3-E9CF50E61322}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Restaurant", "Restaurant", "{5C147244-F87A-4B0F-A892-B8B8AA65654A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Investments", "Investments", "{399F7E6D-7382-4B25-9FDE-1EF48882D9C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsSqlBuilder", "InvestmentsSqlBuilder\InvestmentsSqlBuilder.csproj", "{2364516C-9BA2-4500-985A-557DDC86F90D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.SqlBuilder", "InvestmentsSqlBuilder\Investments.SqlBuilder.csproj", "{2364516C-9BA2-4500-985A-557DDC86F90D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsOptimalStoppingDecision", "OptimalStoppingDecision\InvestmentsOptimalStoppingDecision.csproj", "{0DEAACB5-5C86-425A-B92F-352916E8180F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.OptimalStoppingDecision", "OptimalStoppingDecision\Investments.OptimalStoppingDecision.csproj", "{0DEAACB5-5C86-425A-B92F-352916E8180F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsMonteCarloDecider", "InvestmentsMonteCarloDecider\InvestmentsMonteCarloDecider.csproj", "{47345806-E4B8-499D-8DEF-D2F27E3ED5DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.MonteCarloDecider", "InvestmentsMonteCarloDecider\Investments.MonteCarloDecider.csproj", "{47345806-E4B8-499D-8DEF-D2F27E3ED5DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentsChangesGenerator", "InvestmentsChangesGenerator\InvestmentsChangesGenerator.csproj", "{3A01CA81-C005-420F-8DE0-6C4830CCCE00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.ChangesGenerator", "InvestmentsChangesGenerator\Investments.ChangesGenerator.csproj", "{3A01CA81-C005-420F-8DE0-6C4830CCCE00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.VectorsFileReader", "Investments.VectorsFileReader\Investments.VectorsFileReader.csproj", "{487E79B1-D8F5-4D5F-BD0E-9F11466B8AFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{3A01CA81-C005-420F-8DE0-6C4830CCCE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A01CA81-C005-420F-8DE0-6C4830CCCE00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A01CA81-C005-420F-8DE0-6C4830CCCE00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{487E79B1-D8F5-4D5F-BD0E-9F11466B8AFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{487E79B1-D8F5-4D5F-BD0E-9F11466B8AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{487E79B1-D8F5-4D5F-BD0E-9F11466B8AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{487E79B1-D8F5-4D5F-BD0E-9F11466B8AFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +113,6 @@ Global
 		{0DEAACB5-5C86-425A-B92F-352916E8180F} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
 		{47345806-E4B8-499D-8DEF-D2F27E3ED5DB} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
 		{3A01CA81-C005-420F-8DE0-6C4830CCCE00} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
+		{487E79B1-D8F5-4D5F-BD0E-9F11466B8AFF} = {399F7E6D-7382-4B25-9FDE-1EF48882D9C3}
 	EndGlobalSection
 EndGlobal

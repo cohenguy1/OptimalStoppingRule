@@ -10,8 +10,6 @@ namespace InvestmentsSqlBuilder
 {
     class SqlBuilder
     {
-        public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
-
         public const string VectorsFile = "Vectors.txt";
 
         public const string VectorCommandsFile = "SqlCommands.txt";
@@ -22,9 +20,9 @@ namespace InvestmentsSqlBuilder
         {
             WriteVectorCommands();
 
-            InitializeChangeProbabilities();
+            var changes = GetChanges();
 
-            WriteProbsCommands();
+            WriteProbsCommands(changes);
 
             // Console.ReadLine();
         }
@@ -103,21 +101,19 @@ namespace InvestmentsSqlBuilder
             fs.Close();
         }
 
-        private static void WriteProbsCommands()
+        private static void WriteProbsCommands(int[] changes)
         {
             FileStream fs2 = new FileStream(ProbsCommandsFile, FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            string deleteCommand = ("delete from ChangeProbabilities;" + Environment.NewLine);
+            string deleteCommand = ("delete from Changes;" + Environment.NewLine);
             sw.WriteLine(deleteCommand);
 
-            foreach (var changePair in ChangeProbabilities.OrderBy(keyValue => keyValue.Key))
+            foreach (var change in changes)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("Insert Into ChangeProbabilities(Change, Probability) Values (");
-                sb.Append(changePair.Key);
-                sb.Append(", ");
-                sb.Append(changePair.Value);
+                sb.Append("Insert Into Changes(Change) Values (");
+                sb.Append(change);
                 sb.Append(");");
 
                 sw.WriteLine(sb.ToString());
@@ -127,24 +123,21 @@ namespace InvestmentsSqlBuilder
             fs2.Close();
         }
 
-        private static void InitializeChangeProbabilities()
+        private static int[] GetChanges()
         {
             FileStream fs = new FileStream("NasdaqChange.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
+
+            int[] changes = new int[Constants.NumOfChanges];
 
             for (int i = 0; i < Constants.NumOfChanges; i++)
             {
                 string line = sr.ReadLine();
 
-                var change = int.Parse(line);
-
-                if (!ChangeProbabilities.ContainsKey(change))
-                {
-                    ChangeProbabilities.Add(change, 0);
-                }
-
-                ChangeProbabilities[change] += 1.0 / Constants.NumOfChanges;
+                changes[i] = int.Parse(line);
             }
+
+            return changes;
         }
     }
 }

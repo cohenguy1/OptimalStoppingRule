@@ -1,12 +1,13 @@
-﻿using MonteCarloDecider;
-using GamesCommon;
+﻿using GamesCommon;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using VectorFileReader;
+using InvestmentsMonteCarloDecider;
 
-namespace VectorFileReader
+namespace Investments.VectorsFileReader
 {
-    public class RestaurantVectorFileReader
+    public class InvestmentsVectorFileReader
     {
         private static int vectorNum = 0;
 
@@ -14,50 +15,47 @@ namespace VectorFileReader
         {
             FileStream fs = new FileStream("Vectors.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
+
             Random random = new Random();
-            Random rand2 = new Random();
 
             bool terminate;
 
-            double[] acceptedCandidatesDistribution = new double[11];
-
-            int[] optimalStopRankingAcc = new int[11];
-            int[] mcStopRankingAcc = new int[11];
-
-            int[] optimalStopPositionAcc = new int[11];
-            int[] mcStopPositionAcc = new int[11];
+            int[] optimalStopPositionAcc = new int[Constants.TotalInvestmentsTurns + 1];
+            int[] mcStopPositionAcc = new int[Constants.TotalInvestmentsTurns + 1];
 
             var diff = 0;
 
             FileStream fs2 = new FileStream("VectorsOutput.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            sw.WriteLine("Vector\tOptimal\tMC\t\tAccepted");
+            sw.WriteLine("Vector\tOptimal\tMC\t\tChanges");
 
             var startTime = DateTime.Now;
             Console.WriteLine("Started at: " + startTime);
 
-            while (vectorNum <= 50)
+            MonteCarlo.InitializeChangeProbabilities();
+
+            while (vectorNum <= Constants.NumOfVectors)
             {
-                int[] accepted = ReadNextVector(sr, out terminate, ref vectorNum, rand2);
+                Console.WriteLine("Processing Vector " + (vectorNum + 1));
+
+                int[] changes = ReadNextVector(sr, out terminate, ref vectorNum);
 
                 if (terminate)
                 {
                     break;
                 }
 
-                if (accepted[0] == 0)
+                if (changes[0] == 0)
                 {
                     continue;
                 }
 
-                int optimalStoppingPosition = GetOptimalStopping(accepted) + 1;
+                int optimalStoppingPosition = GetOptimalStopping(changes) + 1;
                 optimalStopPositionAcc[optimalStoppingPosition]++;
-                optimalStopRankingAcc[accepted[optimalStoppingPosition - 1]]++;
-
-                int mcStoppingPosition = GetMonteCarloStopping(accepted, random) + 1;
+            
+                int mcStoppingPosition = GetMonteCarloStopping(changes, random) + 1;
                 mcStopPositionAcc[mcStoppingPosition]++;
-                mcStopRankingAcc[accepted[mcStoppingPosition - 1]]++;
 
                 if (optimalStoppingPosition != mcStoppingPosition)
                 {
@@ -68,20 +66,15 @@ namespace VectorFileReader
 
                 for (int index = 0; index < Constants.TotalCandidates; index++)
                 {
-                    acceptedCandidatesDistribution[accepted[index]]++;
-                    sw.Write(accepted[index] + "\t");
+                    sw.Write(changes[index] + "\t");
                 }
 
                 sw.WriteLine();
             }
 
-            SummaryPrinter.SetNumOfIterations(Constants.TotalPositions);
-
-            SummaryPrinter.PrintSummary(sw, acceptedCandidatesDistribution, vectorNum);
+            SummaryPrinter.SetNumOfIterations(Constants.TotalInvestmentsTurns);
 
             SummaryPrinter.PrintSummary(sw, optimalStopPositionAcc, mcStopPositionAcc, "Position");
-
-            SummaryPrinter.PrintSummary(sw, optimalStopRankingAcc, mcStopRankingAcc, "Ranking");
 
             SummaryPrinter.PrintDiff(sw, diff);
 
@@ -101,7 +94,7 @@ namespace VectorFileReader
         {
             int stoppingDecision = 0;
 
-            for (; stoppingDecision < 10; stoppingDecision++)
+            for (; stoppingDecision < Constants.TotalInvestmentsTurns; stoppingDecision++)
             {
                 bool shouldAsk = Optimal.ShouldAsk(accepted, stoppingDecision);
 
@@ -114,18 +107,13 @@ namespace VectorFileReader
             return stoppingDecision;
         }
 
-        private static int GetMonteCarloStopping(int[] accepted, Random random)
+        private static int GetMonteCarloStopping(int[] changes, Random random)
         {
-            if (accepted[0] <= 3)
-            {
-                return 0;
-            }
+            int stoppingDecision = 0;
 
-            int stoppingDecision = 1;
-            // spare the stoppingDecision = 0 since it didn't stop (accepted[0] > 3)
-            for (; stoppingDecision < 10; stoppingDecision++)
+            for (; stoppingDecision < Constants.TotalInvestmentsTurns; stoppingDecision++)
             {
-                bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision, random);
+                bool shouldAsk = MonteCarlo.ShouldAsk(changes, stoppingDecision, random);
 
                 if (shouldAsk)
                 {
@@ -136,20 +124,17 @@ namespace VectorFileReader
             return stoppingDecision;
         }
 
-        public static int[] ReadNextVector(StreamReader sr, out bool terminate, ref int vectorNum, Random rand)
+        public static int[] ReadNextVector(StreamReader sr, out bool terminate, ref int vectorNum)
         {
             terminate = false;
 
-            var positionNumber = 0;
-
-            int[] accepted = new int[Constants.TotalPositions];
-            int[] intRanks = new int[Constants.TotalCandidates];
+            int[] changes = new int[Constants.TotalInvestmentsTurns];
             string line = sr.ReadLine();
 
             if (line == null)
             {
                 terminate = true;
-                return accepted;
+                return changes;
             }
 
             while (line != null)
@@ -166,30 +151,29 @@ namespace VectorFileReader
                     }
 
                     line = sr.ReadLine();
-                    positionNumber = 0;
                     continue;
                 }
 
-                string[] ranks = line.Split(' ');
+                string[] changesStr = line.Split(' ');
 
                 int i = 0;
                 bool skipLine = false;
-                foreach (string rank in ranks)
+                foreach (string changeStr in changesStr)
                 {
-                    int intRank;
-                    if (rank == string.Empty)
+                    int change;
+                    if (changeStr == string.Empty)
                     {
                         continue;
                     }
 
-                    if (!int.TryParse(rank, out intRank))
+                    if (!int.TryParse(changeStr, out change))
                     {
                         line = sr.ReadLine();
                         skipLine = true;
                         break;
                     }
 
-                    intRanks[i] = intRank;
+                    changes[i] = change;
                     i++;
                 }
 
@@ -198,28 +182,10 @@ namespace VectorFileReader
                     continue;
                 }
 
-                var candidatesByNow = new List<Candidate>();
-                int chosenRank = 0;
-                for (i = 0; i < intRanks.Length; i++)
-                {
-                    var newCandidate = new Candidate() { CandidateRank = intRanks[i] };
-                    DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, newCandidate, rand);
-
-                    if (newCandidate.CandidateAccepted)
-                    {
-                        chosenRank = intRanks[i];
-                        accepted[positionNumber] = chosenRank;
-                        break;
-                    }
-                }
-
-                positionNumber++;
-
                 line = sr.ReadLine();
             }
 
-            return accepted;
+            return changes;
         }
-
     }
 }

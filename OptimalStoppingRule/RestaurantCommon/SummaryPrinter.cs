@@ -10,6 +10,8 @@ namespace VectorFileReader
 {
     public class SummaryPrinter
     {
+        public static int NumOfIterations;
+
         public static void PrintSummary(StreamWriter sw, double[] acceptedCandidatesDistribution, int numOfVectors)
         {
             sw.WriteLine();
@@ -52,32 +54,37 @@ namespace VectorFileReader
             sw.WriteLine("Summary by " + aspect);
             sw.WriteLine();
             sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= NumOfIterations; i++)
             {
                 sw.Write(i + "\t");
             }
             sw.WriteLine();
 
             sw.Write("\t\t");
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= NumOfIterations; i++)
             {
                 sw.Write("===\t");
             }
             sw.WriteLine();
 
             sw.Write("Optimal\t\t");
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= NumOfIterations; i++)
             {
                 sw.Write(optimalStopPositionAcc[i] + "\t");
             }
             sw.WriteLine();
 
             sw.Write("MC\t\t");
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= NumOfIterations; i++)
             {
                 sw.Write(mcStopPositionAcc[i] + "\t");
             }
             sw.WriteLine();
+        }
+
+        public static void SetNumOfIterations(int totalInvestmentsTurns)
+        {
+            NumOfIterations = totalInvestmentsTurns;
         }
 
         public static void PrintDiff(StreamWriter sw, int diff)

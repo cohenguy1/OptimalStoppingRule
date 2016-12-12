@@ -10,9 +10,9 @@ namespace InvestmentsMonteCarloDecider
 {
     public class MonteCarlo
     {
-        public static Dictionary<double, double> ChangeProbabilities = new Dictionary<double, double>();
+        public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
 
-        public static double[] ChangeProbabilitiesArray = new double[Constants.NumOfChanges];
+        public static int[] ChangeProbabilitiesArray = new int[Constants.NumOfChanges];
 
         public const int NumOfVectors = 1000000;
 
@@ -27,9 +27,7 @@ namespace InvestmentsMonteCarloDecider
             {
                 string line = sr.ReadLine();
 
-                var change = double.Parse(line);
-
-                change = Math.Round(change, 2);
+                var change = int.Parse(line);
 
                 ChangeProbabilitiesArray[i] = change;
 
@@ -43,7 +41,7 @@ namespace InvestmentsMonteCarloDecider
         }
 
 
-        public static bool ShouldAsk(double[] changes, int stoppingDecision, Random random)
+        public static bool ShouldAsk(int[] changes, int stoppingDecision, Random random)
         {
             double[] exponentialSmoothing = new double[Constants.TotalInvestmentsTurns];
             double[] exponentialSmoothingAccumulated = new double[Constants.TotalInvestmentsTurns];
@@ -104,7 +102,7 @@ namespace InvestmentsMonteCarloDecider
             }
         }
 
-        private static double GetRandomChange(Random random)
+        private static int GetRandomChange(Random random)
         {
             var changeIndex = random.Next(Constants.NumOfChanges);
 

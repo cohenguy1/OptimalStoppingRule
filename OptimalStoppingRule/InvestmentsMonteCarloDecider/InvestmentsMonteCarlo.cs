@@ -11,12 +11,12 @@ namespace InvestmentsMonteCarloDecider
     {
         public static void Main(string[] args)
         {
-            double[] changes = new double[Constants.TotalInvestmentsTurns];
+            int[] changes = new int[Constants.TotalInvestmentsTurns];
 
             MonteCarlo.InitializeChangeProbabilities();
 
-            var minProb = MonteCarlo.ChangeProbabilities.Min(kv => kv.Key);
-            var maxProb = MonteCarlo.ChangeProbabilities.Max(kv => kv.Key);
+            var minChange = MonteCarlo.ChangeProbabilities.Min(kv => kv.Key);
+            var maxChange = MonteCarlo.ChangeProbabilities.Max(kv => kv.Key);
 
             var stoppingDecision = 0;
             Random random = new Random();
@@ -26,9 +26,8 @@ namespace InvestmentsMonteCarloDecider
 
             DateTime startTime = DateTime.Now;
 
-            for (double i = maxProb; i >= minProb; i -= 0.01)
+            for (int i = maxChange; i >= minChange; i -= 1)
             {
-                i = Math.Round(i, 2);
                 changes[0] = i;
 
                 DateTime now = DateTime.Now;

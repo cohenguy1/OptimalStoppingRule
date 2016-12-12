@@ -46,7 +46,6 @@
     <Compile Include="Optimal.cs" />
     <Compile Include="RestaurantVectorFileReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SummaryPrinter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -56,9 +55,9 @@
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>GamesCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonteCarloDecider\RestaurantMonteCarloDecider.csproj">
+    <ProjectReference Include="..\MonteCarloDecider\Restaurant.MonteCarloDecider.csproj">
       <Project>{6419f5be-12a3-4a0a-8767-ac42ef8e4e05}</Project>
-      <Name>RestaurantMonteCarloDecider</Name>
+      <Name>Restaurant.MonteCarloDecider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
