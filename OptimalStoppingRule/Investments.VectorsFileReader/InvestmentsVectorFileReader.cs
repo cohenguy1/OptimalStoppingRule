@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using VectorFileReader;
 using InvestmentsMonteCarloDecider;
+using System.Web.UI.DataVisualization.Charting;
+using System.Linq;
 
 namespace Investments.VectorsFileReader
 {
@@ -22,6 +24,12 @@ namespace Investments.VectorsFileReader
 
             int[] optimalStopPositionAcc = new int[Constants.TotalInvestmentsTurns + 1];
             int[] mcStopPositionAcc = new int[Constants.TotalInvestmentsTurns + 1];
+
+            List<int[]> changesByPosition = new List<int[]>();
+            for (int i = 0; i < Constants.TotalInvestmentsTurns; i++)
+            {
+                changesByPosition.Add(new int[Constants.NumOfVectors]);
+            }
 
             var diff = 0;
 
@@ -51,6 +59,11 @@ namespace Investments.VectorsFileReader
                     continue;
                 }
 
+                for (int i = 0; i < Constants.TotalInvestmentsTurns; i++)
+                {
+                    changesByPosition[i][vectorNum - 1] = changes[i];
+                }
+
                 int optimalStoppingPosition = GetOptimalStopping(changes) + 1;
                 optimalStopPositionAcc[optimalStoppingPosition]++;
             
@@ -70,6 +83,25 @@ namespace Investments.VectorsFileReader
                 }
 
                 sw.WriteLine();
+            }
+
+            double[] ttests = new double[Constants.TotalInvestmentsTurns];
+
+            for (int i = 0; i < Constants.TotalInvestmentsTurns; i++)
+            {
+                var f = changesByPosition[0].ToList().Select(x => (double)x).ToArray();
+                var s = changesByPosition[i].ToList().Select(x => (double)x).ToArray();
+
+                ttests[i] = Statistics.TTest(f, s);
+            }
+
+            var goodVectors = true;
+            for (int i = 1; i < Constants.TotalInvestmentsTurns; i++)
+            {
+                if (ttests[i] < 0.05)
+                {
+                    goodVectors = false;
+                }
             }
 
             SummaryPrinter.SetNumOfIterations(Constants.TotalInvestmentsTurns);

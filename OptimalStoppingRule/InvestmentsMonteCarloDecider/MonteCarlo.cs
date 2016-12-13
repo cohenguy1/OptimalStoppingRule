@@ -14,9 +14,9 @@ namespace InvestmentsMonteCarloDecider
 
         public static int[] ChangeProbabilitiesArray = new int[Constants.NumOfChanges];
 
-        public const int NumOfVectors = 1000000;
+        public const int NumOfVectors = 1000 * 1000;
 
-        public const double alpha = 0.45;
+        public const double alpha = 0.15;
 
         public static void InitializeChangeProbabilities()
         {
@@ -58,11 +58,15 @@ namespace InvestmentsMonteCarloDecider
                 }
             }
 
+            var count = 0;
+            double avg = 0;
             for (var i = 0; i < NumOfVectors; i++)
             {
                 for (var turnIndex = stoppingDecision + 1; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
                 {
                     var randomChange = GetRandomChange(random);
+                    avg += randomChange;
+                    count++;
 
                     // determine the exponential smoothing according to the new randomized turns
                     exponentialSmoothing[turnIndex] = alpha * randomChange + (1 - alpha) * exponentialSmoothing[turnIndex - 1];
@@ -70,6 +74,7 @@ namespace InvestmentsMonteCarloDecider
                 }
             }
 
+            avg = avg / count;
             // precalculated smooting (monte carlo doesn't affect this smoothing)
             for (var turnIndex = 0; turnIndex <= stoppingDecision; turnIndex++)
             {

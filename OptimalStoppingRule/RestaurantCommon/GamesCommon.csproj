@@ -52,6 +52,7 @@
     <Compile Include="DecisionMaker.cs" />
     <Compile Include="Generation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statistics.cs" />
     <Compile Include="SummaryPrinter.cs" />
   </ItemGroup>
   <ItemGroup>
