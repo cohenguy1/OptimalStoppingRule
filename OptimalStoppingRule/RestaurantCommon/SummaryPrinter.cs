@@ -87,12 +87,18 @@ namespace VectorFileReader
             NumOfIterations = totalInvestmentsTurns;
         }
 
-        public static void PrintDiff(StreamWriter sw, int diff)
+        public static void PrintDiff(StreamWriter sw, IEnumerable<int> similarVectors)
         {
             sw.WriteLine();
             sw.WriteLine();
 
-            sw.WriteLine("MC and Optimal differ by " + diff + " vectors.");
+            sw.WriteLine("MC and Optimal differ by " + (Constants.NumOfVectors - similarVectors.Count()) + " vectors.");
+            sw.WriteLine("Similar Vectors:");
+            foreach (var vector in similarVectors)
+            {
+                sw.Write(vector + " ");
+            }
+
         }
     }
 }

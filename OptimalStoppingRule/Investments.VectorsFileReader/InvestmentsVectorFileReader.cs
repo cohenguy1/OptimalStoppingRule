@@ -31,7 +31,7 @@ namespace Investments.VectorsFileReader
                 changesByPosition.Add(new int[Constants.NumOfVectors]);
             }
 
-            var diff = 0;
+            var similarVectors = new List<int>();
 
             FileStream fs2 = new FileStream("VectorsOutput.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
@@ -54,11 +54,6 @@ namespace Investments.VectorsFileReader
                     break;
                 }
 
-                if (changes[0] == 0)
-                {
-                    continue;
-                }
-
                 for (int i = 0; i < Constants.TotalInvestmentsTurns; i++)
                 {
                     changesByPosition[i][vectorNum - 1] = changes[i];
@@ -70,9 +65,9 @@ namespace Investments.VectorsFileReader
                 int mcStoppingPosition = GetMonteCarloStopping(changes, random) + 1;
                 mcStopPositionAcc[mcStoppingPosition]++;
 
-                if (optimalStoppingPosition != mcStoppingPosition)
+                if (optimalStoppingPosition == mcStoppingPosition)
                 {
-                    diff++;
+                    similarVectors.Add(vectorNum);
                 }
 
                 sw.Write(vectorNum + "\t" + optimalStoppingPosition + "\t" + mcStoppingPosition + "\t\t");
@@ -108,7 +103,7 @@ namespace Investments.VectorsFileReader
 
             SummaryPrinter.PrintSummary(sw, optimalStopPositionAcc, mcStopPositionAcc, "Position");
 
-            SummaryPrinter.PrintDiff(sw, diff);
+            SummaryPrinter.PrintDiff(sw, similarVectors);
 
             Console.WriteLine("Finished at: " + DateTime.Now);
             Console.WriteLine("Total Time: " + (DateTime.Now - startTime).TotalMinutes + " minutes");

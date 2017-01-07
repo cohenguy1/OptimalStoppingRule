@@ -27,7 +27,7 @@ namespace VectorFileReader
             int[] optimalStopPositionAcc = new int[11];
             int[] mcStopPositionAcc = new int[11];
 
-            var diff = 0;
+            var similarVectors = new List<int>();
 
             FileStream fs2 = new FileStream("VectorsOutput.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
@@ -59,9 +59,9 @@ namespace VectorFileReader
                 mcStopPositionAcc[mcStoppingPosition]++;
                 mcStopRankingAcc[accepted[mcStoppingPosition - 1]]++;
 
-                if (optimalStoppingPosition != mcStoppingPosition)
+                if (optimalStoppingPosition == mcStoppingPosition)
                 {
-                    diff++;
+                    similarVectors.Add(vectorNum);
                 }
 
                 sw.Write(vectorNum + "\t" + optimalStoppingPosition + "\t" + mcStoppingPosition + "\t\t");
@@ -83,7 +83,7 @@ namespace VectorFileReader
 
             SummaryPrinter.PrintSummary(sw, optimalStopRankingAcc, mcStopRankingAcc, "Ranking");
 
-            SummaryPrinter.PrintDiff(sw, diff);
+            SummaryPrinter.PrintDiff(sw, similarVectors);
 
             Console.WriteLine("Finished at: " + DateTime.Now);
             Console.WriteLine("Total Time: " + (DateTime.Now - startTime).TotalMinutes + " minutes");
