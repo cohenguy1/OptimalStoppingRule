@@ -14,7 +14,7 @@ namespace InvestmentsMonteCarloDecider
 
         public static int[] ChangeProbabilitiesArray = new int[Constants.NumOfChanges];
 
-        public const int NumOfVectors = 1000 * 1000;
+        public const int NumOfVectors = 1 * 1000 * 1000;
 
         public const double alpha = 0.15;
 

@@ -16,6 +16,6 @@ namespace GamesCommon
 
         public const int TotalInvestmentsTurns = 20;
 
-        public const int NumOfChanges = 100;
+        public const int NumOfChanges = 300;
     }
 }

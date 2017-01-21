@@ -22,12 +22,12 @@ namespace InvestmentsChangesGenerator
 
             List<double> changes = new List<double>();
 
-            int count = 0;
+            int totalChanges = 0;
             string line = sr.ReadLine();
             while (!string.IsNullOrEmpty(line))
             {
                 changes.Add(double.Parse(line));
-                count++;
+                totalChanges++;
                 line = sr.ReadLine();
             }
 
@@ -36,27 +36,55 @@ namespace InvestmentsChangesGenerator
             Random r = new Random();
             List<int> seenIndexes = new List<int>();
 
-            count = 0;
-            while (count < Constants.NumOfChanges)
-            {
-                var index = r.Next(700);
+            double minValue = 0;
+            double maxValue = 0;
 
-                if (seenIndexes.Contains(index))
+            while (selectedChanges.ToList().Count(x => x < 0) < 80)
+            {
+                var count = 0;
+                selectedChanges = new double[Constants.NumOfChanges];
+                seenIndexes = new List<int>();
+                while (count < Constants.NumOfChanges)
                 {
-                    continue;
+                    var index = r.Next(totalChanges);
+
+                    seenIndexes.Add(index);
+
+                    var currentNasdaqValue = changes[index];
+
+                    var randomValue = changes[(index + r.Next(totalChanges)) % totalChanges];
+
+                    var diff = (currentNasdaqValue - randomValue) / currentNasdaqValue * 100;
+                    var absDiff = Math.Abs(diff);
+                    
+                    if (diff < 0)
+                    {
+                        diff *= 1.0 / 5;
+                    }
+
+                    if (diff < -70)
+                    {
+                        /*var rand = r.Next(3);
+                        Thread.Sleep(50);
+                        if (rand == 0)
+                        {
+                            diff = Math.Abs(diff);
+                        }*/
+                    }
+
+                    selectedChanges[count] = diff;
+                    count++;
                 }
 
-                seenIndexes.Add(index);
-                
-                var currentNasdaqValue = changes[index];
-                
-                var lastYearValue = changes[index + r.Next(100) + 265];
+                minValue = selectedChanges.ToList().Min();
+                maxValue = selectedChanges.ToList().Max();
 
-                var diff = Math.Abs(currentNasdaqValue - lastYearValue) / currentNasdaqValue * 100;
-                selectedChanges[count] = diff;
-                count++;
+                for (int i = 0; i < Constants.NumOfChanges; i++)
+                {
+                    selectedChanges[i] = (selectedChanges[i] - minValue) * 130 / (maxValue - minValue) - 30;
+                }
             }
-
+            
             if (File.Exists(ChangesOutputFile))
             {
                 File.Delete(ChangesOutputFile);
@@ -67,8 +95,13 @@ namespace InvestmentsChangesGenerator
 
             for (int i = 0; i < Constants.NumOfChanges; i++)
             {
-                sw.WriteLine(selectedChanges[i]);
+                sw.WriteLine((int)selectedChanges[i]);
             }
+
+            Console.WriteLine("Min: " + minValue);
+            Console.WriteLine("Max: " + maxValue);
+
+            Console.ReadLine();
 
             sw.Close();
             fs2.Close();
