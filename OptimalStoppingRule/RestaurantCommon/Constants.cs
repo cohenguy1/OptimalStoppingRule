@@ -16,6 +16,8 @@ namespace GamesCommon
 
         public const int TotalInvestmentsTurns = 20;
 
-        public const int NumOfChanges = 300;
+        public const int InvestmentsNumOfChanges = 300;
+
+        public const int MonteCarloSimulations = 10 * 1000 * 1000;
     }
 }

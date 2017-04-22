@@ -51,6 +51,8 @@ namespace VectorFileReader
                     continue;
                 }
 
+                Console.WriteLine("Processing Vector " + vectorNum);
+
                 int optimalStoppingPosition = GetOptimalStopping(accepted) + 1;
                 optimalStopPositionAcc[optimalStoppingPosition]++;
                 optimalStopRankingAcc[accepted[optimalStoppingPosition - 1]]++;
@@ -116,12 +118,7 @@ namespace VectorFileReader
 
         private static int GetMonteCarloStopping(int[] accepted, Random random)
         {
-            if (accepted[0] <= 3)
-            {
-                return 0;
-            }
-
-            int stoppingDecision = 1;
+            int stoppingDecision = 0;
             // spare the stoppingDecision = 0 since it didn't stop (accepted[0] > 3)
             for (; stoppingDecision < 10; stoppingDecision++)
             {

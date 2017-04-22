@@ -31,7 +31,7 @@ namespace InvestmentsChangesGenerator
                 line = sr.ReadLine();
             }
 
-            double[] selectedChanges = new double[Constants.NumOfChanges];
+            double[] selectedChanges = new double[Constants.InvestmentsNumOfChanges];
 
             Random r = new Random();
             List<int> seenIndexes = new List<int>();
@@ -42,9 +42,9 @@ namespace InvestmentsChangesGenerator
             while (selectedChanges.ToList().Count(x => x < 0) < 80)
             {
                 var count = 0;
-                selectedChanges = new double[Constants.NumOfChanges];
+                selectedChanges = new double[Constants.InvestmentsNumOfChanges];
                 seenIndexes = new List<int>();
-                while (count < Constants.NumOfChanges)
+                while (count < Constants.InvestmentsNumOfChanges)
                 {
                     var index = r.Next(totalChanges);
 
@@ -79,7 +79,7 @@ namespace InvestmentsChangesGenerator
                 minValue = selectedChanges.ToList().Min();
                 maxValue = selectedChanges.ToList().Max();
 
-                for (int i = 0; i < Constants.NumOfChanges; i++)
+                for (int i = 0; i < Constants.InvestmentsNumOfChanges; i++)
                 {
                     selectedChanges[i] = (selectedChanges[i] - minValue) * 130 / (maxValue - minValue) - 30;
                 }
@@ -93,7 +93,7 @@ namespace InvestmentsChangesGenerator
             FileStream fs2 = new FileStream(ChangesOutputFile, FileMode.CreateNew);
             StreamWriter sw = new StreamWriter(fs2);
 
-            for (int i = 0; i < Constants.NumOfChanges; i++)
+            for (int i = 0; i < Constants.InvestmentsNumOfChanges; i++)
             {
                 sw.WriteLine((int)selectedChanges[i]);
             }

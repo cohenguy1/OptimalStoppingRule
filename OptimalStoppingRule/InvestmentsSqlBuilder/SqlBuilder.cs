@@ -128,9 +128,9 @@ namespace InvestmentsSqlBuilder
             FileStream fs = new FileStream("NasdaqChange.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
 
-            int[] changes = new int[Constants.NumOfChanges];
+            int[] changes = new int[Constants.InvestmentsNumOfChanges];
 
-            for (int i = 0; i < Constants.NumOfChanges; i++)
+            for (int i = 0; i < Constants.InvestmentsNumOfChanges; i++)
             {
                 string line = sr.ReadLine();
 

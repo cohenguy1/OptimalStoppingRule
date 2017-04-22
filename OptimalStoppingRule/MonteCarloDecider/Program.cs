@@ -18,12 +18,11 @@ namespace MonteCarloDecider
 
             for (int i = 1; i <= 10; i++)
             {
-                //for (int j = 1; j <= 10; j++)
-                //{
-                    accepted[0] = i;
-                    //accepted[1] = j;
+                accepted[0] = 1;
+                //accepted[1] = 1;
+                //accepted[2] = i;
 
-                    DateTime now = DateTime.Now;
+                DateTime now = DateTime.Now;
                     bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision, random);
                     var dt = DateTime.Now - now;
 
@@ -33,7 +32,6 @@ namespace MonteCarloDecider
                     {
                         break;
                     }
-                //}
             }
 
             Console.ReadLine();

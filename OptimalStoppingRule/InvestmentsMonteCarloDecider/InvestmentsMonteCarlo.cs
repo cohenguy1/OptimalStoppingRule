@@ -28,7 +28,7 @@ namespace InvestmentsMonteCarloDecider
 
             for (int i = maxChange; i >= minChange; i -= 1)
             {
-                changes[0] = i;
+                changes[0] = 23;
 
                 DateTime now = DateTime.Now;
                 prevShouldAsk = shouldAsk;
@@ -36,10 +36,10 @@ namespace InvestmentsMonteCarloDecider
 
                 var dt = DateTime.Now - now;
 
-                if (prevShouldAsk != shouldAsk)
-                {
-                    Console.WriteLine(i + "," + " - ask: " + shouldAsk + " Time for calculation: " + dt.TotalSeconds);
-                }
+                //if (prevShouldAsk != shouldAsk)
+                //{
+                    Console.WriteLine(changes[0] + "," + " - ask: " + shouldAsk + " Time for calculation: " + dt.TotalSeconds);
+                //}
 
                 if (!shouldAsk)
                 {

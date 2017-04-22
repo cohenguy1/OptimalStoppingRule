@@ -85,7 +85,7 @@ namespace OptimalStoppingDecision
             FileStream fs = new FileStream("NasdaqChange.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
 
-            for (int i = 0; i < Constants.NumOfChanges; i++)
+            for (int i = 0; i < Constants.InvestmentsNumOfChanges; i++)
             {
                 string line = sr.ReadLine();
 
@@ -96,7 +96,7 @@ namespace OptimalStoppingDecision
                     ChangeProbabilities.Add(change, 0);
                 }
 
-                ChangeProbabilities[change] += 1.0 / Constants.NumOfChanges;
+                ChangeProbabilities[change] += 1.0 / Constants.InvestmentsNumOfChanges;
             }
         }
 

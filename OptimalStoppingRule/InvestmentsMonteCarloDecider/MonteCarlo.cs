@@ -12,18 +12,18 @@ namespace InvestmentsMonteCarloDecider
     {
         public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
 
-        public static int[] ChangeProbabilitiesArray = new int[Constants.NumOfChanges];
+        public static int[] ChangeProbabilitiesArray = new int[Constants.InvestmentsNumOfChanges];
 
         public const int NumOfVectors = 1 * 1000 * 1000;
 
-        public const double alpha = 0.15;
+        public const double alpha = 0.66;
 
         public static void InitializeChangeProbabilities()
         {
             FileStream fs = new FileStream("NasdaqChange.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
 
-            for (int i = 0; i < Constants.NumOfChanges; i++)
+            for (int i = 0; i < Constants.InvestmentsNumOfChanges; i++)
             {
                 string line = sr.ReadLine();
 
@@ -36,7 +36,7 @@ namespace InvestmentsMonteCarloDecider
                     ChangeProbabilities.Add(change, 0);
                 }
 
-                ChangeProbabilities[change] += 1.0 / Constants.NumOfChanges;
+                ChangeProbabilities[change] += 1.0 / Constants.InvestmentsNumOfChanges;
             }
         }
 
@@ -45,6 +45,8 @@ namespace InvestmentsMonteCarloDecider
         {
             double[] exponentialSmoothing = new double[Constants.TotalInvestmentsTurns];
             double[] exponentialSmoothingAccumulated = new double[Constants.TotalInvestmentsTurns];
+
+            int[] stoppingCount = new int[Constants.TotalInvestmentsTurns];
 
             for (var turnsIndex = 0; turnsIndex <= stoppingDecision; turnsIndex++)
             {
@@ -70,9 +72,39 @@ namespace InvestmentsMonteCarloDecider
 
                     // determine the exponential smoothing according to the new randomized turns
                     exponentialSmoothing[turnIndex] = alpha * randomChange + (1 - alpha) * exponentialSmoothing[turnIndex - 1];
-                    exponentialSmoothingAccumulated[turnIndex] += exponentialSmoothing[turnIndex];
+                    //exponentialSmoothingAccumulated[turnIndex] += exponentialSmoothing[turnIndex];
+                }
+
+                double curExp = exponentialSmoothing[stoppingDecision];
+
+                double maxExp = exponentialSmoothing[stoppingDecision + 1];
+                int maxIndex = stoppingDecision + 1;
+                for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
+                {
+                    if (exponentialSmoothing[positionIndex] > maxExp)
+                    {
+                        maxExp = exponentialSmoothing[positionIndex];
+                        maxIndex = positionIndex;
+                    }
+                }
+
+                if (maxExp > curExp)
+                {
+                    stoppingCount[maxIndex]++;
+                }
+                else
+                {
+                    stoppingCount[stoppingDecision]++;
                 }
             }
+
+            if (stoppingCount.Max() == stoppingCount[stoppingDecision])
+            {
+                return true;
+            }
+
+            return false;
+        
 
             avg = avg / count;
             // precalculated smooting (monte carlo doesn't affect this smoothing)
@@ -103,13 +135,13 @@ namespace InvestmentsMonteCarloDecider
         {
             for (var turnIndex = stoppingDecision + 1; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
             {
-                randomChanges[turnIndex] = ChangeProbabilitiesArray[random.Next(Constants.NumOfChanges)];
+                randomChanges[turnIndex] = ChangeProbabilitiesArray[random.Next(Constants.InvestmentsNumOfChanges)];
             }
         }
 
         private static int GetRandomChange(Random random)
         {
-            var changeIndex = random.Next(Constants.NumOfChanges);
+            var changeIndex = random.Next(Constants.InvestmentsNumOfChanges);
 
             return ChangeProbabilitiesArray[changeIndex];
         }

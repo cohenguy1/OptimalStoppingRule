@@ -21,6 +21,13 @@ namespace MonteCarloDecider
             double[] exponentialSmoothing = new double[10];
             double[] exponentialSmoothingAccumulated = new double[10];
 
+            if (stoppingDecision == 9)
+            {
+                return true;
+            }
+
+            int[] stoppingCount = new int[10];
+
             int[] acceptedClone = cloneArray(accepted);
 
             for (var positionIndex = 0; positionIndex <= stoppingDecision; positionIndex++)
@@ -49,9 +56,38 @@ namespace MonteCarloDecider
                 for (var positionIndex = stoppingDecision + 1; positionIndex < Constants.TotalPositions; positionIndex++)
                 {
                     exponentialSmoothing[positionIndex] = alpha * acceptedClone[positionIndex] + (1 - alpha) * exponentialSmoothing[positionIndex - 1];
-                    exponentialSmoothingAccumulated[positionIndex] += exponentialSmoothing[positionIndex];
+                    //exponentialSmoothingAccumulated[positionIndex] += exponentialSmoothing[positionIndex];
+                }
+
+                double curExp = exponentialSmoothing[stoppingDecision];
+
+                double minExp = exponentialSmoothing[stoppingDecision + 1];
+                int minIndex = stoppingDecision + 1;
+                for (var positionIndex = stoppingDecision + 1; positionIndex < 10; positionIndex++)
+                {
+                    if (exponentialSmoothing[positionIndex] < minExp)
+                    {
+                        minExp = exponentialSmoothing[positionIndex];
+                        minIndex = positionIndex;
+                    }
+                }
+
+                if (minExp < curExp)
+                {
+                    stoppingCount[minIndex]++;
+                }
+                else
+                {
+                    stoppingCount[stoppingDecision]++;
                 }
             }
+
+            if (stoppingCount.Max() == stoppingCount[stoppingDecision])
+            {
+                return true;
+            }
+
+            return false;
 
             // precalculated smooting (monte carlo doesn't affect this smoothing)
             for (var positionIndex = 0; positionIndex <= stoppingDecision; positionIndex++)
