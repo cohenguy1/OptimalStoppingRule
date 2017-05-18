@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace RestaurantGameOptimalStopping
 {
-    class RateDecisionForOptimal
+    class RestaurantOptimalDecision
     {
-        public const int NumOfRanks = Constants.TotalCandidates;
-
         public static Dictionary<int, double> ChosenRankProbabilities = new Dictionary<int, double>()
         {
             /*{1, 0.1 },
@@ -76,17 +74,17 @@ namespace RestaurantGameOptimalStopping
             {20, 0.000776805 }*/
         };
 
-        public static double[] stoppingValues = new double[Constants.TotalPositions];
+        public static double[] stoppingValues = new double[Constants.TotalRestaurantPositions];
 
         public static void Main(string[] args)
         {
             var expectation = GetExpectation(ChosenRankProbabilities);
 
-            stoppingValues[Constants.TotalPositions - 1] = NumOfRanks;
+            stoppingValues[Constants.TotalRestaurantPositions - 1] = Constants.RestaurantNumOfCandidates;
 
-            double[] expectedRankTi = new double[Constants.TotalPositions + 1];
+            double[] expectedRankTi = new double[Constants.TotalRestaurantPositions + 1];
 
-            for (int i = Constants.TotalPositions - 2; i >= 0; i--)
+            for (int i = Constants.TotalRestaurantPositions - 2; i >= 0; i--)
             {
                 for (int j = 1; j <= stoppingValues[i + 1]; j++)
                 {
@@ -108,7 +106,7 @@ namespace RestaurantGameOptimalStopping
                 }
             }
 
-            for (int i = Constants.TotalPositions - 1; i >= 0; i--)
+            for (int i = Constants.TotalRestaurantPositions - 1; i >= 0; i--)
             {
                 Console.WriteLine((i + 1) + " Stopping Value: " + stoppingValues[i]);
             }
@@ -135,7 +133,7 @@ namespace RestaurantGameOptimalStopping
         {
             double accumulatedProbability = 0;
 
-            for (int i = rank + 1; i <= NumOfRanks; i++)
+            for (int i = rank + 1; i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 accumulatedProbability += ChosenRankProbabilities[i];
             }
@@ -159,7 +157,7 @@ namespace RestaurantGameOptimalStopping
         {
             double expectation = 0;
 
-            for (int i = 1; i <= NumOfRanks; i++)
+            for (int i = 1; i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 expectation += i * chosenRankProbabilities[i];
             }

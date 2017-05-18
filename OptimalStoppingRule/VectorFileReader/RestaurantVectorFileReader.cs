@@ -68,7 +68,7 @@ namespace VectorFileReader
 
                 sw.Write(vectorNum + "\t" + optimalStoppingPosition + "\t" + mcStoppingPosition + "\t\t");
 
-                for (int index = 0; index < Constants.TotalCandidates; index++)
+                for (int index = 0; index < Constants.RestaurantNumOfCandidates; index++)
                 {
                     acceptedCandidatesDistribution[accepted[index]]++;
                     sw.Write(accepted[index] + "\t");
@@ -77,7 +77,7 @@ namespace VectorFileReader
                 sw.WriteLine();
             }
 
-            SummaryPrinter.SetNumOfIterations(Constants.TotalPositions);
+            SummaryPrinter.SetNumOfIterations(Constants.TotalRestaurantPositions);
 
             SummaryPrinter.PrintSummary(sw, acceptedCandidatesDistribution, vectorNum);
 
@@ -139,8 +139,8 @@ namespace VectorFileReader
 
             var positionNumber = 0;
 
-            int[] accepted = new int[Constants.TotalPositions];
-            int[] intRanks = new int[Constants.TotalCandidates];
+            int[] accepted = new int[Constants.TotalRestaurantPositions];
+            int[] intRanks = new int[Constants.RestaurantNumOfCandidates];
             string line = sr.ReadLine();
 
             if (line == null)

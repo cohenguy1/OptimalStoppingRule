@@ -19,20 +19,20 @@ namespace VectorFileReader
 
             for (int i = 0; i < acceptedCandidatesDistribution.Length; i++)
             {
-                acceptedCandidatesDistribution[i] /= ((double)Constants.TotalCandidates * numOfVectors / 100);
+                acceptedCandidatesDistribution[i] /= ((double)Constants.RestaurantNumOfCandidates * numOfVectors / 100);
             }
 
             sw.WriteLine("Summary by Accepted:");
             sw.WriteLine();
             sw.Write("\t\t");
-            for (int i = 1; i <= Constants.TotalCandidates; i++)
+            for (int i = 1; i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 sw.Write(i + "\t");
             }
             sw.WriteLine();
 
             sw.Write("\t\t");
-            for (int i = 1; i <= Constants.TotalCandidates; i++)
+            for (int i = 1; i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 sw.Write("===\t");
             }

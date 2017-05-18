@@ -12,9 +12,9 @@ namespace Investments.ImprovedMonteCarlo
 
         public static int[] ChangeProbabilitiesArray = new int[Constants.InvestmentsNumOfChanges];
 
-        public const double alpha = 0.66;
+        public const double alpha = 0.347;
 
-        public const double delta = 0.02;
+        public const double delta = 0.01;
 
         public static double[] Thresholds = new double[Constants.TotalInvestmentsTurns];
 

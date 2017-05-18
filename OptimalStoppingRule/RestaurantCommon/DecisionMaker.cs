@@ -8,11 +8,9 @@ namespace GamesCommon
 {
     public class DecisionMaker
     {
-        public const int TotalCandidates = Constants.TotalCandidates;
+        private static double[] c = new double[Constants.RestaurantNumOfCandidates + 1];
 
-        private static double[] c = new double[TotalCandidates + 1];
-
-        public static int[] StoppingRule = new int[TotalCandidates + 1];
+        public static int[] StoppingRule = new int[Constants.RestaurantNumOfCandidates + 1];
 
         private static DecisionMaker _instance;
 
@@ -28,7 +26,7 @@ namespace GamesCommon
 
         private DecisionMaker()
         {
-            int n = TotalCandidates;
+            int n = Constants.RestaurantNumOfCandidates;
 
             c[n - 1] = (n + 1) / 2.0;
 
@@ -42,13 +40,13 @@ namespace GamesCommon
             }
 
            
-            for (var i = 2; i <= TotalCandidates; i++)
+            for (var i = 2; i <= Constants.RestaurantNumOfCandidates; i++)
             {
-                StoppingRule[i] = Math.Min(Constants.TotalCandidates, StoppingRule[i] + 1);
+                StoppingRule[i] = Math.Min(Constants.RestaurantNumOfCandidates, StoppingRule[i] + 1);
                 
                 if (i >= 4)
                 {
-                    StoppingRule[i] = Math.Min(Constants.TotalCandidates, StoppingRule[i] + 1);
+                    StoppingRule[i] = Math.Min(Constants.RestaurantNumOfCandidates, StoppingRule[i] + 1);
                 }
             }
 
@@ -84,7 +82,7 @@ namespace GamesCommon
 
         public bool Decide(List<Candidate> candidatesByNow, int newCandidateIndex, Random rand)
         {
-            if (candidatesByNow.Count == Constants.TotalCandidates)
+            if (candidatesByNow.Count == Constants.RestaurantNumOfCandidates)
             {
                 return true;
             }

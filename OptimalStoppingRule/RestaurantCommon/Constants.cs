@@ -10,14 +10,14 @@ namespace GamesCommon
     {
         public const int NumOfVectors = 50;
 
-        public const int TotalCandidates = 10;
+        public const int RestaurantNumOfCandidates = 10;
 
-        public const int TotalPositions = 10;
+        public const int TotalRestaurantPositions = 10;
 
         public const int TotalInvestmentsTurns = 20;
 
         public const int InvestmentsNumOfChanges = 300;
 
-        public const int MonteCarloSimulations = 10 * 1000 * 1000;
+        public const int MonteCarloSimulations = 50 * 1000 * 1000;
     }
 }

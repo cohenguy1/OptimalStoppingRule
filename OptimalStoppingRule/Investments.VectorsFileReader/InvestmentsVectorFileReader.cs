@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using VectorFileReader;
-using InvestmentsMonteCarloDecider;
 using System.Web.UI.DataVisualization.Charting;
 using System.Linq;
 
@@ -40,8 +39,6 @@ namespace Investments.VectorsFileReader
 
             var startTime = DateTime.Now;
             Console.WriteLine("Started at: " + startTime);
-
-            MonteCarlo.InitializeChangeProbabilities();
 
             while (vectorNum <= Constants.NumOfVectors)
             {
@@ -140,7 +137,7 @@ namespace Investments.VectorsFileReader
 
             for (; stoppingDecision < Constants.TotalInvestmentsTurns; stoppingDecision++)
             {
-                bool shouldAsk = MonteCarlo.ShouldAsk(changes, stoppingDecision, random);
+                bool shouldAsk = MonteCarlo.ShouldAsk(changes, stoppingDecision);
 
                 if (shouldAsk)
                 {

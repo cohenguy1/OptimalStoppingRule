@@ -11,8 +11,6 @@ namespace OptimalStoppingRule
 {
     public class GetRankProbabilities
     {
-        public const int TotalCandidates = Constants.TotalCandidates;
-
         public const string ProbabilitiesFile = "Probabilities.txt";
 
         public const long NumberOfTrials = 10000000;
@@ -27,7 +25,7 @@ namespace OptimalStoppingRule
             FileStream output = new FileStream(ProbabilitiesFile, FileMode.CreateNew);
             StreamWriter sw = new StreamWriter(output);
 
-            var acceptedCount = new long[TotalCandidates];
+            var acceptedCount = new long[Constants.RestaurantNumOfCandidates];
 
             var candidatesByNow = new List<Candidate>();
 
@@ -72,12 +70,12 @@ namespace OptimalStoppingRule
                 Generation.InitCandidatesForPosition(positionCandidates, random);
                 candidatesByNow.Clear();
 
-                for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
+                for (int candidateIndex = 0; candidateIndex < Constants.RestaurantNumOfCandidates; candidateIndex++)
                 {
                     validation[positionCandidates[candidateIndex].CandidateRank - 1] += candidateIndex + 1;
                 }
 
-                for (int candidateIndex = 0; candidateIndex < TotalCandidates; candidateIndex++)
+                for (int candidateIndex = 0; candidateIndex < Constants.RestaurantNumOfCandidates; candidateIndex++)
                 {
                     var currentCandidate = positionCandidates[candidateIndex];
                     DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand2);
@@ -91,9 +89,9 @@ namespace OptimalStoppingRule
                 }
             }
 
-            var acceptedRankProbability = new double[TotalCandidates];
+            var acceptedRankProbability = new double[Constants.RestaurantNumOfCandidates];
 
-            for (int i = 0; i < TotalCandidates; i++)
+            for (int i = 0; i < Constants.RestaurantNumOfCandidates; i++)
             {
                 acceptedRankProbability[i] = acceptedCount[i] / (double)NumberOfTrials;
 
@@ -102,14 +100,14 @@ namespace OptimalStoppingRule
                 sw.WriteLine("Accepted Rank " + (i + 1) + ": " + acceptedRankProbability[i]);
             }
 
-            for (int i = 0; i < TotalCandidates; i++)
+            for (int i = 0; i < Constants.RestaurantNumOfCandidates; i++)
             {
                 validation[i] /= NumberOfTrials;
 
                 sw.WriteLine("Validation " + (i + 1) + ": " + validation[i]);
             }
 
-            for (int i = 1; i <= TotalCandidates; i++)
+            for (int i = 1; i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 decisionStoppingPosition[i] /= NumberOfTrials;
                 sw.WriteLine("Decision Stopping Position " + (i) + ": " + decisionStoppingPosition[i]);
@@ -122,7 +120,7 @@ namespace OptimalStoppingRule
             sw.WriteLine();
 
             sw.WriteLine("Dictionary for probabilities: ");
-            for (int i = 0; i < TotalCandidates; i++)
+            for (int i = 0; i < Constants.RestaurantNumOfCandidates; i++)
             {
                 sw.WriteLine("{" + (i + 1) + ", " + acceptedRankProbability[i] + " }, ");
             }

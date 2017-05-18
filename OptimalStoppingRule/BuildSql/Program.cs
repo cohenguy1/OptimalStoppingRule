@@ -18,7 +18,7 @@ namespace BuildSql
             FileStream fs2 = new FileStream("SqlCommands.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs2);
 
-            int[] intRanks = new int[Constants.TotalCandidates];
+            int[] intRanks = new int[Constants.RestaurantNumOfCandidates];
 
             int vectorNumber = 0;
             int positionNumber = 0;

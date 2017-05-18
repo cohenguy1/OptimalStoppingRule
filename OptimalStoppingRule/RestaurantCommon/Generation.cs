@@ -14,7 +14,7 @@ namespace GamesCommon
         {
             var positionCandidates = new List<Candidate>();
 
-            for (var candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
+            for (var candidateIndex = 0; candidateIndex < Constants.RestaurantNumOfCandidates; candidateIndex++)
             {
                 var newCandidate = new Candidate()
                 {
@@ -30,15 +30,15 @@ namespace GamesCommon
         public static void InitCandidatesForPosition(List<Candidate> positionCandidates, Random randomGenerator)
         {
             ranks.Clear();
-            for (var index = 1; index <= Constants.TotalCandidates; index++)
+            for (var index = 1; index <= Constants.RestaurantNumOfCandidates; index++)
             {
                 ranks.Add(index);
             }
 
-            var ranksRemaining = Constants.TotalCandidates;
+            var ranksRemaining = Constants.RestaurantNumOfCandidates;
             int position;
 
-            for (var index = 0; index < Constants.TotalCandidates; index++)
+            for (var index = 0; index < Constants.RestaurantNumOfCandidates; index++)
             {
                 if (ranksRemaining > 1)
                 {

@@ -16,8 +16,8 @@ namespace RandomVectorsGenerator
             Random random = new Random();
             Random rand2 = new Random();
 
-            int[] acceptedCountOnFirst = new int[Constants.TotalCandidates];
-            int[] acceptedCountOnSecond = new int[Constants.TotalCandidates];
+            int[] acceptedCountOnFirst = new int[Constants.RestaurantNumOfCandidates];
+            int[] acceptedCountOnSecond = new int[Constants.RestaurantNumOfCandidates];
 
             while (acceptedCountOnFirst[0] > 8 || acceptedCountOnFirst[0] == 0 ||
                    acceptedCountOnFirst[1] > 8 ||
@@ -41,7 +41,7 @@ namespace RandomVectorsGenerator
                 for (var i = 0; i < Constants.NumOfVectors; i++)
                 {
                     sw.WriteLine("-- Vector " + (i + 1));
-                    for (var positionIndex = 0; positionIndex < Constants.TotalPositions; positionIndex++)
+                    for (var positionIndex = 0; positionIndex < Constants.TotalRestaurantPositions; positionIndex++)
                     {
                         Generation.InitCandidatesForPosition(positionCandidates, random);
                         if (positionIndex == 0)
@@ -72,7 +72,7 @@ namespace RandomVectorsGenerator
         private static void IncreaseAcceptedCount(int[] acceptedCount, List<Candidate> positionCandidates, Random rand)
         {
             var candidatesByNow = new List<Candidate>();
-            for (int candidateIndex = 0; candidateIndex < Constants.TotalCandidates; candidateIndex++)
+            for (int candidateIndex = 0; candidateIndex < Constants.RestaurantNumOfCandidates; candidateIndex++)
             {
                 var currentCandidate = positionCandidates[candidateIndex];
                 DecisionMaker.GetInstance().DetermineCandidateRank(candidatesByNow, currentCandidate, rand);

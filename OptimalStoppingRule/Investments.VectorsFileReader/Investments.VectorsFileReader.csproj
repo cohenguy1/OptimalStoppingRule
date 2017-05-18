@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InvestmentsVectorFileReader.cs" />
+    <Compile Include="MonteCarlo.cs" />
     <Compile Include="Optimal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -52,10 +53,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InvestmentsMonteCarloDecider\Investments.MonteCarloDecider.csproj">
-      <Project>{47345806-e4b8-499d-8def-d2f27e3ed5db}</Project>
-      <Name>Investments.MonteCarloDecider</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RestaurantCommon\GamesCommon.csproj">
       <Project>{c2c8f49c-3355-4d49-92a7-331578d43b8b}</Project>
       <Name>GamesCommon</Name>
