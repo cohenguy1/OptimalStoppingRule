@@ -49,11 +49,13 @@
   <ItemGroup>
     <Compile Include="Candidate.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CorrelationFinder.cs" />
     <Compile Include="DecisionMaker.cs" />
     <Compile Include="Generation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SummaryPrinter.cs" />
+    <Compile Include="UserResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

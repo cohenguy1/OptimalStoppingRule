@@ -1,10 +1,9 @@
-﻿using MonteCarloDecider;
-using GamesCommon;
+﻿using GamesCommon;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace VectorFileReader
+namespace Restaurant.VectorsFileReader
 {
     public class RestaurantVectorFileReader
     {
@@ -37,7 +36,7 @@ namespace VectorFileReader
             var startTime = DateTime.Now;
             Console.WriteLine("Started at: " + startTime);
 
-            while (vectorNum <= 50)
+            while (vectorNum <= Constants.NumOfVectors)
             {
                 int[] accepted = ReadNextVector(sr, out terminate, ref vectorNum, rand2);
 
@@ -122,7 +121,7 @@ namespace VectorFileReader
             // spare the stoppingDecision = 0 since it didn't stop (accepted[0] > 3)
             for (; stoppingDecision < 10; stoppingDecision++)
             {
-                bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision, random);
+                bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision);
 
                 if (shouldAsk)
                 {

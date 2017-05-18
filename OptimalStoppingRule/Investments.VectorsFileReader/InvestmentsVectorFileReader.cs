@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using VectorFileReader;
-using System.Web.UI.DataVisualization.Charting;
 using System.Linq;
 
 namespace Investments.VectorsFileReader

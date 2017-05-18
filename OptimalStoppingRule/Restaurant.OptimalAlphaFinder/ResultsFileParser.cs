@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Investments.OptimalAlphaFinder
+namespace Restaurant.OptimalAlphaFinder
 {
     public class ResultsFileParser
     {
-        public static IEnumerable<InvestmentUserResult> Parse(string filePath)
+        public static IEnumerable<RestaurantUserResult> Parse(string filePath)
         {
-            var userResults = new List<InvestmentUserResult>();
+            var userResults = new List<RestaurantUserResult>();
             int userIndex = 0;
             var lines = File.ReadAllLines(filePath);
 
@@ -25,14 +25,14 @@ namespace Investments.OptimalAlphaFinder
                     continue;
                 }
 
-                InvestmentUserResult userResult = new InvestmentUserResult();
+                RestaurantUserResult userResult = new RestaurantUserResult();
 
                 userResult.UserIndex = userIndex;
                 userResult.UserId = columns[0];
                 userResult.AskHeuristics = columns[1];
                 userResult.AdviserRating = int.Parse(columns[2]);
 
-                for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
+                for (int turnIndex = 0; turnIndex < Constants.TotalRestaurantPositions; turnIndex++)
                 {
                     int? turnValue = null;
                     string turnString = columns[turnIndex + 3];

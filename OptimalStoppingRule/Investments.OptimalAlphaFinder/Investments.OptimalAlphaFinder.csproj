@@ -44,10 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlphaFinder.cs" />
-    <Compile Include="CorrelationFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultsFileParser.cs" />
-    <Compile Include="UserResult.cs" />
+    <Compile Include="InvestmentUserResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
