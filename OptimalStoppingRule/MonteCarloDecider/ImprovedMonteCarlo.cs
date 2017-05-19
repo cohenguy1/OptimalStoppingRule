@@ -4,33 +4,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Restautant.ImprovedMonteCarlo
+namespace Restaurant.MonteCarloDecider
 {
     public class ImprovedMonteCarlo
     {
-        public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
-
-        public static int[] ChangeProbabilitiesArray = new int[Constants.InvestmentsNumOfChanges];
-
         public const double alpha = 0.347;
 
         public const double delta = 0.01;
 
-        public static double[] Thresholds = new double[Constants.TotalInvestmentsTurns];
+        public const string MonteCarloFile = "MonteCarloProbs.txt";
+
+        public static double[] Thresholds = new double[Constants.TotalRestaurantPositions];
 
         public static void Main(string[] args)
         {
-            InitializeChangeProbabilities();
 
-            for (int turnIndex = Constants.TotalInvestmentsTurns - 1; turnIndex >= 0; turnIndex--)
+            for (int turnIndex = Constants.TotalRestaurantPositions - 1; turnIndex >= 0; turnIndex--)
             {
                 switch (turnIndex)
                 {
-                    case Constants.TotalInvestmentsTurns - 1:
-                        Thresholds[Constants.TotalInvestmentsTurns - 1] = ChangeProbabilitiesArray.Min();
+                    case Constants.TotalRestaurantPositions - 1:
+                        Thresholds[Constants.TotalRestaurantPositions - 1] = RestaurantProbabilities.AcceptedProbabilities.Max(keyVal => keyVal.Key);
                         break;
-                    case Constants.TotalInvestmentsTurns - 2:
-                        Thresholds[Constants.TotalInvestmentsTurns - 2] = GetExpectation();
+                    case Constants.TotalRestaurantPositions - 2:
+                        Thresholds[Constants.TotalRestaurantPositions - 2] = GetExpectation();
                         break;
                     default:
                         Thresholds[turnIndex] = FindThreshold(turnIndex);
@@ -40,7 +37,33 @@ namespace Restautant.ImprovedMonteCarlo
                 Console.WriteLine("Threshold " + turnIndex + ": " + Thresholds[turnIndex]);
             }
 
+            WriteMonteCarlo();
+
             Console.ReadLine();
+        }
+
+        public static void WriteMonteCarlo()
+        {
+            if (File.Exists(MonteCarloFile))
+            {
+                File.Delete(MonteCarloFile);
+            }
+
+            FileStream output = new FileStream(MonteCarloFile, FileMode.CreateNew);
+            StreamWriter sw = new StreamWriter(output);
+
+
+            sw.WriteLine("Dictionary for thresholds: ");
+            for (int i = Constants.TotalRestaurantPositions; i > 0; i--)
+            {
+                sw.WriteLine("{" + i + ", " + Thresholds[i - 1] + " }, ");
+            }
+
+            sw.Close();
+            output.Close();
+
+
+
         }
 
         public static double FindThreshold(int stoppingDecision)
@@ -48,7 +71,7 @@ namespace Restautant.ImprovedMonteCarlo
             Random random = new Random();
 
             double minThreshold = Thresholds[stoppingDecision + 1];
-            double maxThreshold = ChangeProbabilitiesArray.Max();
+            double maxThreshold = RestaurantProbabilities.AcceptedProbabilities.Min(keyVal => keyVal.Key);
             var currentThreshold = (minThreshold + maxThreshold) / 2.0;
             var monteCarloThreshold = 0.0;
 
@@ -60,14 +83,14 @@ namespace Restautant.ImprovedMonteCarlo
                 for (int i = 0; i < Constants.MonteCarloSimulations; i++)
                 {
                     double prevExponentialSmoothing = currentThreshold;
-                    for (int turnIndex = stoppingDecision + 1; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
+                    for (int turnIndex = stoppingDecision + 1; turnIndex < Constants.TotalRestaurantPositions; turnIndex++)
                     {
-                        var randomChange = GetRandomChange(random);
+                        var randomChange = GetRandomAccepted(random);
 
                         var exponentialSmoothing = randomChange * alpha + prevExponentialSmoothing * (1 - alpha);
 
-                        if (exponentialSmoothing > Thresholds[turnIndex] ||
-                            (turnIndex == Constants.TotalInvestmentsTurns - 1))
+                        if (exponentialSmoothing < Thresholds[turnIndex] ||
+                            (turnIndex == Constants.TotalRestaurantPositions - 1))
                         {
                             // better than threshold or last turn
                             avgExponentialSmoothing += exponentialSmoothing;
@@ -80,7 +103,7 @@ namespace Restautant.ImprovedMonteCarlo
 
                 avgExponentialSmoothing /= Constants.MonteCarloSimulations;
 
-                if (avgExponentialSmoothing > currentThreshold)
+                if (avgExponentialSmoothing < currentThreshold)
                 {
                     minThreshold = currentThreshold;
                 }
@@ -98,41 +121,31 @@ namespace Restautant.ImprovedMonteCarlo
         public static double GetExpectation()
         {
             double expectation = 0;
-            foreach (var change in ChangeProbabilities)
+            foreach (var pair in RestaurantProbabilities.AcceptedProbabilities)
             {
-                expectation += change.Key * change.Value;
+                expectation += pair.Key * pair.Value;
             }
 
             return expectation;
         }
 
-        public static void InitializeChangeProbabilities()
+        private static int GetRandomAccepted(Random randomSeed)
         {
-            FileStream fs = new FileStream("NasdaqChange.txt", FileMode.Open);
-            StreamReader sr = new StreamReader(fs);
+            var random = randomSeed.NextDouble();
 
-            for (int i = 0; i < Constants.InvestmentsNumOfChanges; i++)
+            var currentThreshold = 0d;
+
+            foreach (var pair in RestaurantProbabilities.AcceptedProbabilities)
             {
-                string line = sr.ReadLine();
-
-                var change = int.Parse(line);
-
-                ChangeProbabilitiesArray[i] = change;
-
-                if (!ChangeProbabilities.ContainsKey(change))
+                if ((random < pair.Value + currentThreshold) && (random > currentThreshold))
                 {
-                    ChangeProbabilities.Add(change, 0);
+                    return pair.Key;
                 }
 
-                ChangeProbabilities[change] += 1.0 / Constants.InvestmentsNumOfChanges;
+                currentThreshold += pair.Value;
             }
-        }
 
-        private static int GetRandomChange(Random random)
-        {
-            var changeIndex = random.Next(Constants.InvestmentsNumOfChanges);
-
-            return ChangeProbabilitiesArray[changeIndex];
+            return RestaurantProbabilities.AcceptedProbabilities.Max(keyVal => keyVal.Key);
         }
 
     }

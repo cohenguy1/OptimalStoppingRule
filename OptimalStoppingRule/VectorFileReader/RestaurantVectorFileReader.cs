@@ -18,6 +18,8 @@ namespace Restaurant.VectorsFileReader
 
             bool terminate;
 
+            List<int[]> acceptedVectors = new List<int[]>();
+
             double[] acceptedCandidatesDistribution = new double[11];
 
             int[] optimalStopRankingAcc = new int[11];
@@ -49,6 +51,13 @@ namespace Restaurant.VectorsFileReader
                 {
                     continue;
                 }
+
+                if (SimilarVectorExists(acceptedVectors, accepted))
+                {
+                    throw new ArgumentNullException();
+                }
+
+                acceptedVectors.Add(accepted);
 
                 Console.WriteLine("Processing Vector " + vectorNum);
 
@@ -96,6 +105,29 @@ namespace Restaurant.VectorsFileReader
             fs2.Close();
 
             Console.ReadLine();
+        }
+
+        public static bool SimilarVectorExists(List<int[]> acceptedVectors, int[] accepted)
+        {
+            foreach (var vector in acceptedVectors)
+            {
+                bool found = true;
+                for (int i = 0; i < Constants.TotalRestaurantPositions; i++)
+                {
+                    if (vector[i] != accepted[i])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static int GetOptimalStopping(int[] accepted)

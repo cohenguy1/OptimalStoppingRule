@@ -97,7 +97,7 @@ namespace Restaurant.OptimalAlphaFinder
                 var alpha = keyValue.Key;
                 var alphaValue = keyValue.Value;
 
-                if (alphaValue > bestAlphaValue)
+                if (alphaValue < bestAlphaValue)
                 {
                     bestAlpha = alpha;
                     bestAlphaValue = alphaValue;
