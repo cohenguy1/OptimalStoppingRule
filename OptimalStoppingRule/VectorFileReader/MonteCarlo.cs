@@ -8,6 +8,8 @@ namespace Restaurant.VectorsFileReader
 {
     public class MonteCarlo
     {
+        public const double Alpha = 0.347;
+
         private static Dictionary<int, double> minimalRankToAsk = new Dictionary<int, double>()
         {
             {10, 10 },
@@ -25,7 +27,13 @@ namespace Restaurant.VectorsFileReader
 
         public static bool ShouldAsk(int[] accepted, int stoppingDecision)
         {
-            var ask = accepted[stoppingDecision] <= minimalRankToAsk[stoppingDecision + 1];
+            double exponentialSmoothing = accepted[0];
+            for (int i = 1; i <= stoppingDecision; i++)
+            {
+                exponentialSmoothing = Alpha * accepted[i] + (1 - Alpha) * exponentialSmoothing;
+            }
+
+            var ask = exponentialSmoothing <= minimalRankToAsk[stoppingDecision + 1];
             return ask;
         }
         

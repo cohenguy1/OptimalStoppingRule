@@ -8,6 +8,7 @@ namespace Investments.VectorsFileReader
 {
     public class MonteCarlo
     {
+        // TODO Wrongggggggggggg!! use exponential smoothing for ask
         private static Dictionary<int, double> minimalProfitToAsk = new Dictionary<int, double>()
         {
             {1, 43.2796104045151 },
@@ -35,6 +36,7 @@ namespace Investments.VectorsFileReader
 
         public static bool ShouldAsk(int[] profits, int stoppingDecision)
         {
+            // TODO Wrongggggggggggg!!
             var ask = profits[stoppingDecision] >= minimalProfitToAsk[stoppingDecision + 1];
             return ask;
         }
