@@ -27,7 +27,7 @@ namespace Restaurant.MonteCarloDecider
                         Thresholds[Constants.TotalRestaurantPositions - 1] = RestaurantProbabilities.AcceptedProbabilities.Max(keyVal => keyVal.Key);
                         break;
                     case Constants.TotalRestaurantPositions - 2:
-                        Thresholds[Constants.TotalRestaurantPositions - 2] = GetExpectation();
+                        Thresholds[Constants.TotalRestaurantPositions - 2] = RestaurantProbabilities.GetExpectation();
                         break;
                     default:
                         Thresholds[turnIndex] = FindThreshold(turnIndex);
@@ -61,9 +61,6 @@ namespace Restaurant.MonteCarloDecider
 
             sw.Close();
             output.Close();
-
-
-
         }
 
         public static double FindThreshold(int stoppingDecision)
@@ -85,7 +82,7 @@ namespace Restaurant.MonteCarloDecider
                     double prevExponentialSmoothing = currentThreshold;
                     for (int turnIndex = stoppingDecision + 1; turnIndex < Constants.TotalRestaurantPositions; turnIndex++)
                     {
-                        var randomChange = GetRandomAccepted(random);
+                        var randomChange = RestaurantProbabilities.GetRandomAccepted(random);
 
                         var exponentialSmoothing = randomChange * alpha + prevExponentialSmoothing * (1 - alpha);
 
@@ -117,36 +114,5 @@ namespace Restaurant.MonteCarloDecider
 
             return currentThreshold;
         }
-
-        public static double GetExpectation()
-        {
-            double expectation = 0;
-            foreach (var pair in RestaurantProbabilities.AcceptedProbabilities)
-            {
-                expectation += pair.Key * pair.Value;
-            }
-
-            return expectation;
-        }
-
-        private static int GetRandomAccepted(Random randomSeed)
-        {
-            var random = randomSeed.NextDouble();
-
-            var currentThreshold = 0d;
-
-            foreach (var pair in RestaurantProbabilities.AcceptedProbabilities)
-            {
-                if ((random < pair.Value + currentThreshold) && (random > currentThreshold))
-                {
-                    return pair.Key;
-                }
-
-                currentThreshold += pair.Value;
-            }
-
-            return RestaurantProbabilities.AcceptedProbabilities.Max(keyVal => keyVal.Key);
-        }
-
     }
 }
