@@ -96,7 +96,7 @@ namespace InvestmentsRandomVectorsGenerator
                 goodVectors = true;
                 for (int i = 1; i < Constants.TotalInvestmentsTurns; i++)
                 {
-                    if (ttests[i] < 0.25)
+                    if (ttests[i] > 0.8)
                     {
                         goodVectors = false;
                     }

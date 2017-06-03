@@ -57,7 +57,7 @@ namespace Investments.VectorsFileReader
                 int optimalStoppingPosition = GetOptimalStopping(changes) + 1;
                 optimalStopPositionAcc[optimalStoppingPosition]++;
             
-                int mcStoppingPosition = GetMonteCarloStopping(changes, random) + 1;
+                int mcStoppingPosition = GetMonteCarloStopping(changes) + 1;
                 mcStopPositionAcc[mcStoppingPosition]++;
 
                 if (optimalStoppingPosition == mcStoppingPosition)
@@ -129,7 +129,7 @@ namespace Investments.VectorsFileReader
             return stoppingDecision;
         }
 
-        private static int GetMonteCarloStopping(int[] changes, Random random)
+        private static int GetMonteCarloStopping(int[] changes)
         {
             int stoppingDecision = 0;
 

@@ -65,7 +65,7 @@ namespace Restaurant.VectorsFileReader
                 optimalStopPositionAcc[optimalStoppingPosition]++;
                 optimalStopRankingAcc[accepted[optimalStoppingPosition - 1]]++;
 
-                int mcStoppingPosition = GetMonteCarloStopping(accepted, random) + 1;
+                int mcStoppingPosition = GetMonteCarloStopping(accepted) + 1;
                 mcStopPositionAcc[mcStoppingPosition]++;
                 mcStopRankingAcc[accepted[mcStoppingPosition - 1]]++;
 
@@ -147,10 +147,10 @@ namespace Restaurant.VectorsFileReader
             return stoppingDecision;
         }
 
-        private static int GetMonteCarloStopping(int[] accepted, Random random)
+        private static int GetMonteCarloStopping(int[] accepted)
         {
             int stoppingDecision = 0;
-            // spare the stoppingDecision = 0 since it didn't stop (accepted[0] > 3)
+            
             for (; stoppingDecision < 10; stoppingDecision++)
             {
                 bool shouldAsk = MonteCarlo.ShouldAsk(accepted, stoppingDecision);
