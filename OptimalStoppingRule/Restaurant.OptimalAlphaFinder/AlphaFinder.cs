@@ -12,13 +12,34 @@ namespace Restaurant.OptimalAlphaFinder
 
         public const string OutputFile = "Alphas.txt";
 
+        public const string AlphasByObservationsFile = "AlphasByObservations.txt";
+
         public const double delta = 0.001;
 
         public static void Main(string[] args)
         {
-            var userResults = ResultsFileParser.Parse(InputFile);
-            //userResults = userResults.Where(user => user.UserIndex % 3 == 0);
+            var userResultsSize = ResultsFileParser.Parse(InputFile).Count();
+            Dictionary<int, double> alphaByNumOfObservations = new Dictionary<int, double>();
+            for (int i = 0; i < userResultsSize; i += 2)
+            {
+                var userResults = ResultsFileParser.Parse(InputFile);
+                userResults = userResults.Where(user => user.UserIndex <= i);
 
+                var bestAlpha = CalculateCorrelationsAndFindBestAlpha(userResults);
+                alphaByNumOfObservations.Add(i, bestAlpha);
+            }
+
+            //FindBestAlpha(alphaValues);
+
+            //WriteAlphasByOrder(alphaValues);
+            WriteAlphasToFile(alphaByNumOfObservations);
+
+            Console.ReadLine();
+
+        }
+
+        private static double CalculateCorrelationsAndFindBestAlpha(IEnumerable<RestaurantUserResult> userResults)
+        {
             var alphaValues = new Dictionary<double, double>();
 
             for (var alpha = 0.0; alpha <= 1.0; alpha += delta)
@@ -34,19 +55,24 @@ namespace Restaurant.OptimalAlphaFinder
                 var correlation = CorrelationFinder.GetCorrelation(userResults);
 
                 alphaValues.Add(alpha, correlation);
-
-                if (alpha.ToString("0.00") == "0.38")
-                {
-                    PrintSmoothedAndRateValues(userResults);
-                }
             }
 
-            FindBestAlpha(alphaValues);
+            return FindBestAlpha(alphaValues);
+        }
 
-            WriteAlphasByOrder(alphaValues);
+        public static void WriteAlphasToFile(Dictionary<int, double> alphasByObservations)
+        {
+            var sorted = alphasByObservations.OrderBy(pair => pair.Key);
+            FileStream fs = new FileStream(AlphasByObservationsFile, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
 
-            Console.ReadLine();
+            foreach (var keyValue in sorted)
+            {
+                sw.WriteLine(keyValue.Key + " " + keyValue.Value.ToString("0.000"));
+            }
 
+            sw.Close();
+            fs.Close();
         }
 
         private static void PrintSmoothedAndRateValues(IEnumerable<UserResult> userResults)
@@ -87,10 +113,13 @@ namespace Restaurant.OptimalAlphaFinder
             fs.Close();
         }
 
-        private static void FindBestAlpha(Dictionary<double, double> alphaValues)
+        private static double FindBestAlpha(Dictionary<double, double> alphaValues)
         {
             var bestAlpha = 0.0;
             var bestAlphaValue = 0.0;
+
+            FileStream alphaVsPearsonFile = new FileStream("AlphaVsPearson.txt", FileMode.Create);
+            StreamWriter sw = new StreamWriter(alphaVsPearsonFile);
 
             foreach (var keyValue in alphaValues)
             {
@@ -102,10 +131,21 @@ namespace Restaurant.OptimalAlphaFinder
                     bestAlpha = alpha;
                     bestAlphaValue = alphaValue;
                 }
+
+                double temp = Math.Round(alpha * 1000);
+                if ((int)temp % 10 == 0)
+                {
+                    sw.WriteLine(alpha.ToString("0.00") + " , " + alphaValue.ToString());
+                }
             }
+
+            sw.Close();
+            alphaVsPearsonFile.Close();  
 
             Console.WriteLine("Best Alpha: " + bestAlpha);
             Console.WriteLine("Best Pearson Correlation: " + bestAlphaValue);
+
+            return bestAlpha;
         }
 
         public static double CaluclateExponentialSmoothedValue(int?[] turnValues, double alpha)
