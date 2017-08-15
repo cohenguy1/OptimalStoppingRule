@@ -8,6 +8,8 @@ namespace Investments.ImprovedMonteCarlo
 {
     public class ImprovedMonteCarlo
     {
+        public static string ThresholdsFile = "Thresholds.txt";
+
         public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
 
         public static int[] ChangeProbabilitiesArray = new int[Constants.InvestmentsNumOfChanges];
@@ -40,6 +42,15 @@ namespace Investments.ImprovedMonteCarlo
                 Console.WriteLine("Threshold " + turnIndex + ": " + Thresholds[turnIndex]);
             }
 
+            FileStream fs = new FileStream(ThresholdsFile, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
+            {
+                sw.WriteLine((turnIndex+1) + ", " + Thresholds[turnIndex]);
+            }
+            sw.Close();
+            fs.Close();
+
             Console.ReadLine();
         }
 
@@ -52,7 +63,7 @@ namespace Investments.ImprovedMonteCarlo
             var currentThreshold = (minThreshold + maxThreshold) / 2.0;
             var monteCarloThreshold = 0.0;
 
-            while (Math.Abs(currentThreshold - monteCarloThreshold) > delta)
+            while (Math.Abs(currentThreshold - monteCarloThreshold) > delta && (maxThreshold - minThreshold > delta))
             {
                 currentThreshold = (minThreshold + maxThreshold) / 2.0;
 
