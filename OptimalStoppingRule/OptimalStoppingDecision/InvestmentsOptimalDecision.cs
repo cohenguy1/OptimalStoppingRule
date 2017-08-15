@@ -35,27 +35,15 @@ namespace OptimalStoppingDecision
 
             Dictionary<int, double> expectedChangeTi = new Dictionary<int, double>();
 
-            for (int i = Constants.TotalInvestmentsTurns - 2; i >= 0; i--)
+            var Eiplus1 = GetExpectation(ChangeProbabilities);
+            for (int i = Constants.TotalInvestmentsTurns - 1; i > 0; i--)
             {
-                for (int j = maxChange; j >= stoppingValues[i + 1]; j -= 1)
-                {
-                    if (!expectedChangeTi.ContainsKey(j))
-                    {
-                        expectedChangeTi.Add(j, 0);
-                    }
-                    
-                    expectedChangeTi[j] = GetExpectedChangeGreaterThanOrEquals(j)
-                                    + GetProbabilityThatChangeLess(j) * stoppingValues[i + 1];
-                }
+                var Ti = Eiplus1;
+                stoppingValues[i - 1] = Ti;
 
-                stoppingValues[i] = expectedChangeTi[maxChange];
-                for (int j = maxChange; j >= stoppingValues[i + 1]; j -= 1)
-                {
-                    if (expectedChangeTi[j] > stoppingValues[i])
-                    {
-                        stoppingValues[i] = expectedChangeTi[j];
-                    }
-                }
+                var Ei = GetProbabilityThatChangeLess(Ti) * Eiplus1 +
+                    GetExpectedChangeGreaterThanOrEquals(Ti);
+                Eiplus1 = Ei;
             }
 
             for (int i = Constants.TotalInvestmentsTurns - 1; i >= 0; i--)
@@ -128,21 +116,6 @@ namespace OptimalStoppingDecision
             }
 
             return accumulatedProbability;
-        }
-
-        private static double GetExpectationOfChangeGreaterOrEquals(double specificChange)
-        {
-            double expectation = 0;
-
-            foreach (var change in ChangeProbabilities)
-            {
-                if (change.Key >= specificChange)
-                {
-                    expectation += change.Key * change.Value;
-                }
-            }
-
-            return expectation;
         }
 
         private static double GetExpectation(Dictionary<int, double> changeProbabilities)

@@ -22,27 +22,15 @@ namespace RestaurantGameOptimalStopping
 
             double[] expectedRankTi = new double[Constants.TotalRestaurantPositions + 1];
 
-            for (int i = Constants.TotalRestaurantPositions - 2; i >= 0; i--)
+            var Eiplus1 = expectation;
+            for (int i = Constants.TotalRestaurantPositions - 1; i > 0; i--)
             {
-                var maxStoppingValue = StoppingValues[i + 1];
-                for (int j = 1; j <= maxStoppingValue; j++)
-                {
-                    expectedRankTi[j] = GetExpectedRatingLowerThanOrEquals(j)
-                                    + GetProbabilityThatRankGreater(j) * maxStoppingValue;
-                }
+                var Ti = Eiplus1;
+                StoppingValues[i - 1] = Ti;
 
-                StoppingValues[i] = expectedRankTi[1];
-                for (int j = 1; j <= maxStoppingValue; j++)
-                {
-                    if (expectedRankTi[j] < StoppingValues[i])
-                    {
-                        StoppingValues[i] = expectedRankTi[j];
-                    }
-                    if (expectedRankTi[j] < 1)
-                    {
-                        StoppingValues[i] = 1;
-                    }
-                }
+                var Ei = GetProbabilityThatRankGreater(Ti) * Eiplus1 +
+                    GetExpectedRatingLowerThanOrEquals(Ti);
+                Eiplus1 = Ei;
             }
 
             for (int i = Constants.TotalRestaurantPositions - 1; i >= 0; i--)
@@ -78,11 +66,11 @@ namespace RestaurantGameOptimalStopping
             output.Close();
         }
 
-        private static double GetExpectedRatingLowerThanOrEquals(int rank)
+        private static double GetExpectedRatingLowerThanOrEquals(double rank)
         {
             double expectation = 0;
 
-            for (int i = 1; i <= rank; i++)
+            for (int i = 1; i <= (int)Math.Floor(rank); i++)
             {
                 expectation += RestaurantProbabilities.AcceptedProbabilities[i] * i;
             }
@@ -90,28 +78,16 @@ namespace RestaurantGameOptimalStopping
             return expectation;
         }
 
-        private static double GetProbabilityThatRankGreater(int rank)
+        private static double GetProbabilityThatRankGreater(double rank)
         {
             double accumulatedProbability = 0;
 
-            for (int i = rank + 1; i <= Constants.RestaurantNumOfCandidates; i++)
+            for (int i = (int)Math.Ceiling(rank); i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 accumulatedProbability += RestaurantProbabilities.AcceptedProbabilities[i];
             }
 
             return accumulatedProbability;
-        }
-
-        private static double GetExpectationOrRankLowerOrEquals(int rank)
-        {
-            double expectation = 0;
-
-            for (int i = 1; i <= rank; i++)
-            {
-                expectation += i * RestaurantProbabilities.AcceptedProbabilities[i];
-            }
-
-            return expectation;
         }
 
         private static double GetExpectation(Dictionary<int, double> chosenRankProbabilities)
