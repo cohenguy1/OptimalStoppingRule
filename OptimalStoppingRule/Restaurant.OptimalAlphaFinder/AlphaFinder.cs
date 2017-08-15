@@ -20,13 +20,22 @@ namespace Restaurant.OptimalAlphaFinder
         {
             var userResultsSize = ResultsFileParser.Parse(InputFile).Count();
             Dictionary<int, double> alphaByNumOfObservations = new Dictionary<int, double>();
-            for (int i = 0; i < userResultsSize; i += 2)
+            var random = new Random();
+            for (int randomSize = 2; randomSize <= userResultsSize; randomSize += 2)
             {
                 var userResults = ResultsFileParser.Parse(InputFile);
-                userResults = userResults.Where(user => user.UserIndex <= i);
+                double bestAlphaAverage = 0.0;
 
-                var bestAlpha = CalculateCorrelationsAndFindBestAlpha(userResults);
-                alphaByNumOfObservations.Add(i, bestAlpha);
+                for (int j = 0; j < Constants.NumOfPermutations; j++)
+                {
+                    var randomUserResults = chooseRandomUserResults(userResults, randomSize, random);
+                    var bestAlpha = CalculateCorrelationsAndFindBestAlpha(randomUserResults);
+                    bestAlphaAverage += bestAlpha;
+                }
+                bestAlphaAverage /= Constants.NumOfPermutations;
+
+                Console.WriteLine("NumOfObservations: " + randomSize + "  Best Alpha " + bestAlphaAverage);
+                alphaByNumOfObservations.Add(randomSize, bestAlphaAverage);
             }
 
             //FindBestAlpha(alphaValues);
@@ -36,6 +45,23 @@ namespace Restaurant.OptimalAlphaFinder
 
             Console.ReadLine();
 
+        }
+
+        private static List<RestaurantUserResult> chooseRandomUserResults(IEnumerable<RestaurantUserResult> userResults, int randomSize, Random random)
+        {
+            var randomUserResultsRemaining = new List<RestaurantUserResult>(userResults);
+            var randomUserResults = new List<RestaurantUserResult>();
+
+            for (int i = 0; i < randomSize; i++)
+            {
+                var resultPosition = random.Next(randomUserResultsRemaining.Count);
+                var userResult = randomUserResultsRemaining[resultPosition];
+
+                randomUserResultsRemaining.Remove(userResult);
+                randomUserResults.Add(userResult);
+            }
+
+            return randomUserResults;
         }
 
         private static double CalculateCorrelationsAndFindBestAlpha(IEnumerable<RestaurantUserResult> userResults)
@@ -142,8 +168,8 @@ namespace Restaurant.OptimalAlphaFinder
             sw.Close();
             alphaVsPearsonFile.Close();  
 
-            Console.WriteLine("Best Alpha: " + bestAlpha);
-            Console.WriteLine("Best Pearson Correlation: " + bestAlphaValue);
+            //Console.WriteLine("Best Alpha: " + bestAlpha);
+            //Console.WriteLine("Best Pearson Correlation: " + bestAlphaValue);
 
             return bestAlpha;
         }

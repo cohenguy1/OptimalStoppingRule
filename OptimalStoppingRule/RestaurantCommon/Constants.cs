@@ -19,5 +19,7 @@ namespace GamesCommon
         public const int InvestmentsNumOfChanges = 300;
 
         public const int MonteCarloSimulations = 10 * 1000 * 1000;
+
+        public const int NumOfPermutations = 10 * 1000;
     }
 }
