@@ -8,7 +8,7 @@ namespace Restaurant.MonteCarloDecider
 {
     public class ImprovedMonteCarlo
     {
-        public const double alpha = 0.347;
+        public const double alpha = 0.312;
 
         public const double delta = 0.01;
 
@@ -72,7 +72,7 @@ namespace Restaurant.MonteCarloDecider
             var currentThreshold = (minThreshold + maxThreshold) / 2.0;
             var monteCarloThreshold = 0.0;
 
-            while (Math.Abs(currentThreshold - monteCarloThreshold) > delta)
+            while (Math.Abs(currentThreshold - monteCarloThreshold) > delta || (maxThreshold - minThreshold > delta))
             {
                 currentThreshold = (minThreshold + maxThreshold) / 2.0;
 
