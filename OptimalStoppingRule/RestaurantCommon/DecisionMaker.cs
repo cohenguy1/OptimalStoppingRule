@@ -39,7 +39,6 @@ namespace GamesCommon
                 StoppingRule[i - 1] = (int)Math.Floor((i) / ((double)n + 1) * c[i - 1]);
             }
 
-           
             for (var i = 2; i <= Constants.RestaurantNumOfCandidates; i++)
             {
                 StoppingRule[i] = Math.Min(Constants.RestaurantNumOfCandidates, StoppingRule[i] + 1);

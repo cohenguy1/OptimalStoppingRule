@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investments.OptimalAlphaFin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.OptimalAlphaFinder", "Restaurant.OptimalAlphaFinder\Restaurant.OptimalAlphaFinder.csproj", "{A7294BE5-0747-4128-82E9-CB4E04672C16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlComparisonCommandGenerator", "SqlComparisonCommandGenerator\SqlComparisonCommandGenerator.csproj", "{4D2A220E-756F-46E2-BF38-2A147AF71887}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{A7294BE5-0747-4128-82E9-CB4E04672C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7294BE5-0747-4128-82E9-CB4E04672C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7294BE5-0747-4128-82E9-CB4E04672C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D2A220E-756F-46E2-BF38-2A147AF71887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D2A220E-756F-46E2-BF38-2A147AF71887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D2A220E-756F-46E2-BF38-2A147AF71887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D2A220E-756F-46E2-BF38-2A147AF71887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

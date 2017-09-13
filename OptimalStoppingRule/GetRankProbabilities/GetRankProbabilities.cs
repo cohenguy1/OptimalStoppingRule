@@ -14,14 +14,6 @@ namespace OptimalStoppingRule
 
         public static void Main(string[] args)
         {
-            if (File.Exists(ProbabilitiesFile))
-            {
-                File.Delete(ProbabilitiesFile);
-            }
-
-            FileStream output = new FileStream(ProbabilitiesFile, FileMode.CreateNew);
-            StreamWriter sw = new StreamWriter(output);
-
             var acceptedCount = new long[Constants.RestaurantNumOfCandidates];
 
             var candidatesByNow = new List<Candidate>();
@@ -85,6 +77,14 @@ namespace OptimalStoppingRule
                     }
                 }
             }
+
+            if (File.Exists(ProbabilitiesFile))
+            {
+                File.Delete(ProbabilitiesFile);
+            }
+
+            FileStream output = new FileStream(ProbabilitiesFile, FileMode.CreateNew);
+            StreamWriter sw = new StreamWriter(output);
 
             var acceptedRankProbability = new double[Constants.RestaurantNumOfCandidates];
 

@@ -8,6 +8,8 @@ namespace Investments.ImprovedMonteCarlo
 {
     public class ImprovedMonteCarlo
     {
+        public static string DifferencesFile = "Differences.txt";
+
         public static string ThresholdsFile = "Thresholds.txt";
 
         public static Dictionary<int, double> ChangeProbabilities = new Dictionary<int, double>();
@@ -20,10 +22,102 @@ namespace Investments.ImprovedMonteCarlo
 
         public static double[] Thresholds = new double[Constants.TotalInvestmentsTurns];
 
+        public static double[] AverageThresholds = new double[Constants.TotalInvestmentsTurns];
+
+        public static double[][] DifferencesFromBaseline = new double[Constants.RepetitionsForDifferences][];
+
+        public static double[] AverageDiffsFromBaseline = new double[Constants.TotalInvestmentsTurns];
+
+        public static double[] StdDev = new double[Constants.TotalInvestmentsTurns];
+
         public static void Main(string[] args)
         {
+            for (int i = 0; i < Constants.RepetitionsForDifferences; i++)
+            {
+                DifferencesFromBaseline[i] = new double[Constants.TotalInvestmentsTurns];
+            }
+
             InitializeChangeProbabilities();
 
+            for (int i = 0; i < Constants.RepetitionsForDifferences; i++)
+            {
+                FindAllThresholds();
+
+                AggregateDifferencesFromBaseline(i);
+
+                Console.WriteLine("Finished " + (i + 1) + "/" + Constants.RepetitionsForDifferences);
+            }
+
+            Console.WriteLine("Success! Press any key to exit");
+
+            FileStream fs = new FileStream(DifferencesFile, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns - 2; turnIndex++)
+            {
+                for (int i = 0; i < Constants.RepetitionsForDifferences; i++)
+                {
+                    AverageDiffsFromBaseline[turnIndex] += DifferencesFromBaseline[i][turnIndex];
+                }
+                AverageDiffsFromBaseline[turnIndex] /= Constants.RepetitionsForDifferences;
+
+                var absoluteError = AverageDiffsFromBaseline[turnIndex] / BaselineThresholds.Thresholds[turnIndex] * 100;
+
+                sw.WriteLine((turnIndex + 1) + "\t" + absoluteError);
+            }
+
+            sw.WriteLine();
+            sw.WriteLine("Standard Deviation:");
+
+            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns - 2; turnIndex++)
+            {
+                for (int i = 0; i < Constants.RepetitionsForDifferences; i++)
+                {
+                    var diff = DifferencesFromBaseline[i][turnIndex] - AverageDiffsFromBaseline[turnIndex];
+                    StdDev[turnIndex] += diff*diff;
+                }
+                StdDev[turnIndex] /= (Constants.RepetitionsForDifferences - 1);
+                StdDev[turnIndex] = Math.Sqrt(StdDev[turnIndex]);
+                var standardError = StdDev[turnIndex] / Math.Sqrt(Constants.RepetitionsForDifferences);
+                var absoluteStandardError = standardError / BaselineThresholds.Thresholds[turnIndex] * 100;
+                sw.WriteLine(absoluteStandardError);
+            }
+            sw.Close();
+            fs.Close();
+
+
+            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns - 1; turnIndex++)
+            {
+                AverageThresholds[turnIndex] /= Constants.RepetitionsForDifferences;
+            }
+            WriteThresholds(AverageThresholds);
+
+            Console.ReadLine();
+        }
+
+        private static void WriteThresholds(double[] averageThresholds)
+        {
+            FileStream fs = new FileStream(ThresholdsFile, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns - 1; turnIndex++)
+            {
+                sw.WriteLine(AverageThresholds[turnIndex]);
+            }
+            sw.Close();
+            fs.Close();
+        }
+
+        private static void AggregateDifferencesFromBaseline(int index)
+        {
+            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
+            {
+                DifferencesFromBaseline[index][turnIndex] += Math.Abs(Thresholds[turnIndex] - BaselineThresholds.Thresholds[turnIndex]);
+
+                AverageThresholds[turnIndex] += Thresholds[turnIndex];
+            }
+        }
+
+        private static void FindAllThresholds()
+        {
             for (int turnIndex = Constants.TotalInvestmentsTurns - 1; turnIndex >= 0; turnIndex--)
             {
                 switch (turnIndex)
@@ -39,19 +133,8 @@ namespace Investments.ImprovedMonteCarlo
                         break;
                 }
 
-                Console.WriteLine("Threshold " + turnIndex + ": " + Thresholds[turnIndex]);
+                //Console.WriteLine("Threshold " + turnIndex + ": " + Thresholds[turnIndex]);
             }
-
-            FileStream fs = new FileStream(ThresholdsFile, FileMode.Create);
-            StreamWriter sw = new StreamWriter(fs);
-            for (int turnIndex = 0; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
-            {
-                sw.WriteLine((turnIndex+1) + ", " + Thresholds[turnIndex]);
-            }
-            sw.Close();
-            fs.Close();
-
-            Console.ReadLine();
         }
 
         public static double FindThreshold(int stoppingDecision)
@@ -74,7 +157,7 @@ namespace Investments.ImprovedMonteCarlo
                     for (int turnIndex = stoppingDecision + 1; turnIndex < Constants.TotalInvestmentsTurns; turnIndex++)
                     {
                         var randomChange = GetRandomChange(random);
-
+                        
                         var exponentialSmoothing = randomChange * alpha + prevExponentialSmoothing * (1 - alpha);
 
                         if (exponentialSmoothing > Thresholds[turnIndex] ||
